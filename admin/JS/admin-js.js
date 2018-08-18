@@ -18,6 +18,8 @@ jQuery( document ).ready(function() {
 		var search_box_specialization = $(".search_box_specialization").val();
 		var search_box_zipcode = $(".search_box_zipcode").val();
 
+
+		alert( "vdsvbui" );
 		jQuery("#add_new_survey_form").validate({
 
 			// Specify the validation rules
