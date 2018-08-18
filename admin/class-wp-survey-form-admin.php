@@ -43,7 +43,8 @@ class wp_survey_form_admin {
 
 	public function load_custom_wp_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
-		//wp_enqueue_script( 'validate-js', plugins_url( '/JS/jquery.validate.js', __FILE__ ) );
+		wp_enqueue_script( 'validate-js', plugins_url( '/JS/jquery.validate.js', __FILE__ ),  array( 'my_custom_script' ) );
+
 	}
 
 	public function survey_form_add_record() {
