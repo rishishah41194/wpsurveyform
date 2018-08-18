@@ -4,6 +4,9 @@ class wp_survey_form_admin {
 
 	/**
 	 * Initializes WordPress hooks
+	 *
+	 * Author: Rishi Shah
+	 * Since: 1.0
 	 */
 	function __construct() {
 		add_action( 'admin_menu', array( $this, 'wp_survey_form_admin' ) );
@@ -17,6 +20,9 @@ class wp_survey_form_admin {
 
 	/**
 	 * Added Pages in Menu for Settings
+	 *
+	 * Author: Rishi Shah
+	 * Since: 1.0
 	 */
 	public function wp_survey_form_admin() {
 		add_menu_page( 'Add New Survey Form', 'Add New Survey Form', 'administrator', 'add_new_survey_form', array( $this,'add_new_survey_form' ), 'dashicons-forms' );
@@ -36,6 +42,7 @@ class wp_survey_form_admin {
 	}
 	public function load_custom_wp_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
+		wp_enqueue_script( 'validate-js', plugins_url( '/JS/jquery.validate.js', __FILE__ ) );
 	}
 
 	public function survey_form_add_record() {

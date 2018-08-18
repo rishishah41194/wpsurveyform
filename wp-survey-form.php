@@ -8,8 +8,6 @@ Text Domain: wp-survey-form
 Version: 1.0
 */
 
-//require_once WPCF7_PLUGIN_DIR . '/settings.php';
-
 if ( ! defined( 'wp_register_form_path' ) ) {
 	define( 'wp_survey_form_path', plugin_dir_path( __FILE__ ) );
 }
@@ -17,8 +15,6 @@ if ( ! defined( 'wp_register_form_path' ) ) {
 register_activation_hook( __FILE__, 'my_plugin_create_db' );
 function my_plugin_create_db() {
 
-
-	
 	global $wpdb;
 	$charset_collate = $wpdb->get_charset_collate();
 	$table_name = $wpdb->prefix . 'survey_form_data';

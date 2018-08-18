@@ -19,7 +19,7 @@ $result = $wpdb->get_results( "SELECT * FROM `wp_survey_form_data` WHERE `id` = 
 						<td><input type="text" name="survey_question" placeholder="Enter Your Survey Question:" class="survey_name" value="<?php echo isset( $result[0]['survey_form_question'] ) ? $result[0]['survey_form_question'] : "" ?>"></td>
 					</tr>
 					<tr>
-						<td><label>Question Option</label></td>
+						<td><label>Add Question Option</label></td>
 						<td><input type="text" name="question_option" placeholder="Enter Your Survey Option:" class="survey_name question_option" value="<?php echo isset( $result[0]['survey_form_option'] ) ? $result[0]['survey_form_option'] : "" ?>"></td>
 					</tr>
 				</table>
