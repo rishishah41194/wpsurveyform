@@ -12,4 +12,13 @@ jQuery( document ).ready(function() {
 			});
 		}
 	});
+
+	jQuery( "#add_new_survey_form" ).validate({
+		rules: {
+			agree: {
+				required: true
+			}
+		}
+	});
+
 });

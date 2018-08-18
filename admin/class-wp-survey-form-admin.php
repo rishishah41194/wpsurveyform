@@ -32,7 +32,7 @@ class wp_survey_form_admin {
 	public function add_new_survey_form() {
 		require_once( wp_survey_form_path . '/admin/HTML/AddNewSurveyForm.php' );
 	}
- 
+
 	public function display_survey_form() {
 		require_once( wp_survey_form_path . '/admin/HTML/DisplaySurveyForm.php' );
 	}
@@ -40,6 +40,7 @@ class wp_survey_form_admin {
 	public function load_custom_wp_admin_style() {
 		wp_enqueue_style( 'admin-css', plugins_url( '/CSS/admin-style.css', __FILE__ ) );
 	}
+
 	public function load_custom_wp_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
 		wp_enqueue_script( 'validate-js', plugins_url( '/JS/jquery.validate.js', __FILE__ ) );

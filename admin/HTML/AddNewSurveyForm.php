@@ -8,7 +8,7 @@ $result = $wpdb->get_results( "SELECT * FROM `wp_survey_form_data` WHERE `id` = 
 	<div class="wrapper">
 		<h1>Add New Survey Form</h1>
 		<div class="form">
-			<form action='<?php echo get_admin_url(); ?>admin-post.php' method="post" name="survey_form">
+			<form action='<?php echo get_admin_url(); ?>admin-post.php' method="post" name="survey_form" id="add_new_survey_form">
 				<table class="survey_form_table">
 					<tr>
 						<td><label>Survey Name</label></td>
