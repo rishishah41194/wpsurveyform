@@ -32,7 +32,7 @@ class wp_survey_form_admin {
 	public function add_new_survey_form() {
 		require_once( wp_survey_form_path . '/admin/HTML/AddNewSurveyForm.php' );
 	}
-
+ 
 	public function display_survey_form() {
 		require_once( wp_survey_form_path . '/admin/HTML/DisplaySurveyForm.php' );
 	}
