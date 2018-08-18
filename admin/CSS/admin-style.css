@@ -1,0 +1,9 @@
+input.survey_name {width: 300px;}  .display_survey_form_section {width: 71%;margin: 70px 0px 0px 30px;}
+table.display_survey_form_table {border: 1px solid;border-collapse: collapse;width: 100%;}
+.display_survey_form_table tbody tr td {border: 1px solid black;padding: 10px 10px 10px 10px;}
+.display_survey_form_table tbody tr td input[type="text"] {width: 100%;}
+.display_survey_form_table thead tr th {padding: 10px 10px 10px 10px;border: 1px solid black;}
+.delete_survey_form {float: right;}
+.button {color: rgba(30, 22, 54, 0.6);box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;}
+.edit_survey_form a {color: black;text-decoration: none;display: inline-block;}
+.display_survey_form_table thead tr th:nth-child(1) {width: 70%;}
