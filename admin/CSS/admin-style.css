@@ -7,3 +7,4 @@ table.display_survey_form_table {border: 1px solid;border-collapse: collapse;wid
 .button {color: rgba(30, 22, 54, 0.6);box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;}
 .edit_survey_form a {color: black;text-decoration: none;display: inline-block;}
 .display_survey_form_table thead tr th:nth-child(1) {width: 70%;}
+.error {display: block;color: #ec0000;}
