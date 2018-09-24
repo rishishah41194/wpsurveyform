@@ -35,6 +35,11 @@ jQuery( document ).ready(function() {
 		jQuery('.question_option:last').clone().addClass('newClass').appendTo('.question_form_repeater');
 		jQuery('.option_class:last').val("");
 	});
+
+	jQuery(document).on("click", ".remove_option" , function() {
+		jQuery(this).closest("td").remove();
+	});
 	
+
 
 });
