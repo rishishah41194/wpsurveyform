@@ -43,6 +43,7 @@ class wp_survey_form_admin {
 
 	public function load_custom_wp_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
+		wp_enqueue_script( 'jquery_validate_min', plugins_url( '/JS/jquery_validate_min.js', __FILE__ ) );
 	}
 
 	public function survey_form_add_record() {
