@@ -39,5 +39,18 @@ jQuery( document ).ready(function() {
 	jQuery(document).on("click", ".remove_option" , function() {
 		jQuery(this).closest("td").remove();
 	});
+
+	jQuery("#add_new_survey_form").validate({
+		rules: {
+			survey_name: "required",
+			survey_question: "required",
+			question_option: "required"
+		},
+		messages: {
+			survey_name: "Please specify your survey name",
+			survey_question: "Please specify your question",
+			question_option: "Please specify your option",
+		}
+	  });
 	
 });
