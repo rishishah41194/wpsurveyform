@@ -40,6 +40,4 @@ jQuery( document ).ready(function() {
 		jQuery(this).closest("td").remove();
 	});
 	
-
-
 });
