@@ -36,5 +36,8 @@ jQuery( document ).ready(function() {
 		jQuery('.option_class:last').val("");
 	});
 	
+	jQuery(document).on("click", ".remove_option" , function() {
+		jQuery(this).closest("td").remove();
+	});
 
 });
