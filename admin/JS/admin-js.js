@@ -41,5 +41,3 @@ jQuery( document ).ready(function() {
 	});
 	
 });
-
-
