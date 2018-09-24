@@ -12,4 +12,6 @@ table.display_survey_form_table {border: 1px solid;border-collapse: collapse;wid
 .question_option {display: inline-block;}
 table.survey_form_table.form-table td {padding: 0 !important;}
 lable.add_option {background: #008ec2;border-color: #006799;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;}
-lable.remove_option {background: #b90505;border-color: #b90505;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;}
+lable.remove_option {background: #b90505;border-color: #b90505;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer; display: none;}
+.newClass .remove_option {display: inline-block;}
+.newClass .add_option {display: none;}

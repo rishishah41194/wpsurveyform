@@ -39,5 +39,5 @@ jQuery( document ).ready(function() {
 	jQuery(document).on("click", ".remove_option" , function() {
 		jQuery(this).closest("td").remove();
 	});
-	
+
 });

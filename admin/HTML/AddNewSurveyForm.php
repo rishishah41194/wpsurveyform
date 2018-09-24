@@ -16,7 +16,7 @@ $survey_option_array = explode( ",", $survey_option_string );
 					<tr>
 						<th><label>Enable/Disable</label></th>
 						<td>
-							<label><input type="radio" name="enable/disable" value="Enable" class="survey_enable_disable" <?php if( $result[0]['survey_form_enable_disable'] === "Enable" ) { echo "checked"; } ?>>Enable</label>
+							<label><input type="radio" name="enable/disable" value="Enable" class="survey_enable_disable" <?php if( $result[0]['survey_form_enable_disable'] === "Enable" ) { echo "checked"; } ?> <?php if( empty( $id ) ) { echo "checked"; } ?>>Enable</label>
 							<label><input type="radio" name="enable/disable" value="Disable" class="survey_enable_disable" <?php if( $result[0]['survey_form_enable_disable'] === "Disable" ) { echo "checked"; } ?>>Disable</label>
 						</td>
 					</tr>
