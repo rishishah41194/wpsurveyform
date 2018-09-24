@@ -22,11 +22,11 @@ $survey_option_array = explode( ",", $survey_option_string );
 					</tr>
 					<tr>
 						<th><label>Survey Name</label></th>
-						<td><input type="text" name="survey_name" placeholder="Enter your survey name" class="survey_name" value="<?php echo isset( $result[0]['survey_form_name'] ) ? $result[0]['survey_form_name'] : "" ?>"></td>
+						<td><input type="text" name="survey_name" placeholder="Enter your survey name" class="survey_name" value="<?php echo isset( $result[0]['survey_form_name'] ) ? $result[0]['survey_form_name'] : "" ?>"  required></td>
 					</tr>
 					<tr>
 						<th><label>Survey Question</label></th>
-						<td><input type="text" name="survey_question" placeholder="Enter your survey question" class="survey_name" value="<?php echo isset( $result[0]['survey_form_question'] ) ? $result[0]['survey_form_question'] : "" ?>"></td>
+						<td><input type="text" name="survey_question" placeholder="Enter your survey question" class="survey_name" value="<?php echo isset( $result[0]['survey_form_question'] ) ? $result[0]['survey_form_question'] : "" ?>" required></td>
 					</tr>
 					<tr class="question_form_repeater">
 						<th><label>Add Question Option</label></th>
@@ -36,7 +36,7 @@ $survey_option_array = explode( ",", $survey_option_string );
 							$count = 1;
 							foreach ( $survey_option_array as $survey_option_array_result ) {
 								?>
-								<td class="question_option <?php if( $count > 1 ){ echo "newClass"; }  ?>"><input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" value="<?php echo $survey_option_array_result; ?>">
+								<td class="question_option <?php if( $count > 1 ){ echo "newClass"; }  ?>"><input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" value="<?php echo $survey_option_array_result; ?>" required>
 									<lable class="add_option">Add</lable>
 									<lable class="remove_option">Remove</lable>
 								</td>
