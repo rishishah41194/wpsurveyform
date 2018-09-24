@@ -18,12 +18,12 @@ class wp_survey_form_admin {
 		add_action( 'wp_ajax_nopriv_delete_form_data_action', array( $this, 'delete_form_data_action' ) );
 	}
 
-	/**
-	 * Added Pages in Menu for Settings
-	 *
-	 * Author: Rishi Shah
-	 * Since: 1.0
-	 */
+    /**
+     * Added Pages in Menu for Settings
+     *
+     * Author: Rishi Shah
+     * Since: 1.0
+     */
 	public function wp_survey_form_admin() {
 		add_menu_page( 'Add New Survey Form', 'Add New Survey Form', 'administrator', 'add_new_survey_form', array( $this,'add_new_survey_form' ), 'dashicons-forms' );
 		add_submenu_page( 'add_new_survey_form', 'Display Survey Form', 'Display Survey Form', 'manage_options', 'display_survey_form', array( $this,'display_survey_form' ) );
@@ -42,7 +42,6 @@ class wp_survey_form_admin {
 	}
 
 	public function load_custom_wp_admin_script() {
-		wp_enqueue_script( 'validate-js', plugins_url( '/JS/jquery.validate.js', __FILE__ ) );
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
 	}
 
@@ -51,10 +50,13 @@ class wp_survey_form_admin {
 		$survey_name = isset( $_POST['survey_name']) ? $_POST['survey_name'] : "";
 		$survey_question = isset( $_POST['survey_question']) ? $_POST['survey_question'] : "";
 		$question_option = isset( $_POST['question_option']) ? $_POST['question_option'] : "";
+		$survey_form_enable_disable = isset( $_POST['enable/disable']) ? $_POST['enable/disable'] : "";
 		$id = isset( $_POST['id']) ? $_POST['id'] : "";
+		$question_option_remove_blank =  array_filter( $question_option );
+		$question_option_string = implode( ",", $question_option_remove_blank);
 
 		if( !empty( $id ) ){
-			$wpdb->update('wp_survey_form_data', array( 'survey_form_name' => $survey_name, 'survey_form_question' => $survey_question , 'survey_form_option' => $question_option  ), array('id'=>$id ) );
+			$wpdb->update('wp_survey_form_data', array( 'survey_form_name' => $survey_name, 'survey_form_question' => $survey_question , 'survey_form_option' => $question_option_string, 'survey_form_enable_disable' => $survey_form_enable_disable  ), array('id'=>$id ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form&id=$id" );
 		} else {
 			$wpdb->insert(
@@ -62,7 +64,8 @@ class wp_survey_form_admin {
 				array(
 					'survey_form_name'     => $survey_name,
 					'survey_form_question'     => $survey_question,
-					'survey_form_option'     => $question_option,
+					'survey_form_option'     => $question_option_string,
+					'survey_form_enable_disable'     => $survey_form_enable_disable,
 				)
 			);
 			$record_id = $wpdb->insert_id;

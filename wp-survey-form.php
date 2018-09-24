@@ -21,6 +21,7 @@ function my_plugin_create_db() {
 
 	$sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
+		survey_form_enable_disable varchar(255) NULL,
 		survey_form_name varchar(255) NULL,
 		survey_form_question varchar(255) NULL,
 		survey_form_option varchar(255) NULL,

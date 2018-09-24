@@ -8,3 +8,8 @@ table.display_survey_form_table {border: 1px solid;border-collapse: collapse;wid
 .edit_survey_form a {color: black;text-decoration: none;display: inline-block;}
 .display_survey_form_table thead tr th:nth-child(1) {width: 70%;}
 .error {display: block;color: #ec0000;}
+.newClass {display: inline-block;width: 100%;padding: 0 !important;}
+.question_option {display: inline-block;}
+table.survey_form_table.form-table td {padding: 0 !important;}
+lable.add_option {background: #008ec2;border-color: #006799;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;}
+lable.remove_option {background: #b90505;border-color: #b90505;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;}

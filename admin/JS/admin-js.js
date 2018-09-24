@@ -13,33 +13,28 @@ jQuery( document ).ready(function() {
 		}
 	});
 
-	jQuery('.search_box_submit_btn').on('click', function() {
+	jQuery("input[name='enable/disable']").change(function() {
 
-		var search_box_specialization = $(".search_box_specialization").val();
-		var search_box_zipcode = $(".search_box_zipcode").val();
-
-
-		alert( "vdsvbui" );
-		jQuery("#add_new_survey_form").validate({
-
-			// Specify the validation rules
-			rules: {
-				survey_name : "required",
-				survey_question : "required",
-				question_option : "required",
-			},
-
-			// Specify the validation error messages
-			messages: {
-				survey_name : "survey name is required",
-				survey_question : "survey question is required",
-				question_option : "question option level is required",
-			},
-
-			submitHandler: function(form) {
-				form.submit();
-			}
-		});
+		var enable_disable_value = jQuery(this).val();
+		
+		if( enable_disable_value === "Disable" ) {
+			jQuery( ".survey_name" ).prop('readonly', true);
+		} else {
+			jQuery( ".survey_name" ).prop('readonly', false);
+		}
 
 	});
+
+	var enable_disable_value = jQuery("input[name='enable/disable']:checked").val();
+
+	if( enable_disable_value === "Disable" ) {
+		jQuery( ".survey_name" ).prop('readonly', true);
+	}
+
+	jQuery(document).on("click", ".add_option" , function() {
+		jQuery('.question_option:last').clone().addClass('newClass').appendTo('.question_form_repeater');
+		jQuery('.option_class:last').val("");
+	});
+	
+
 });
