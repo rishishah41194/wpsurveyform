@@ -44,7 +44,9 @@ jQuery( document ).ready(function() {
 		rules: {
 			survey_name: "required",
 			survey_question: "required",
-			question_option: "required"
+			"question_option[0]": {
+				required: true
+			}
 		},
 		messages: {
 			survey_name: "Please specify your survey name",
