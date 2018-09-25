@@ -40,4 +40,33 @@ jQuery( document ).ready(function() {
 		jQuery(this).closest("td").remove();
 	});
 
+	jQuery('.checkbox_switch').change(function() {
+		
+		var sf_active_status = "";
+		var sf_shortcode_id = jQuery(this).attr("id");
+		
+		if ( jQuery(this).is(':checked') ) {
+			sf_active_status = "Enable";
+		} else {
+			sf_active_status = "Disable";
+		}
+
+		var ajaxurl = "http://wpregisterform.local/wp-admin/admin-ajax.php";
+		
+		jQuery.ajax({
+			url: ajaxurl,
+			type: 'POST',
+			data:{ 
+			  action: 'sf_active_status_ajax_action',
+			  sf_active_status: sf_active_status,
+			  sf_shortcode_id: sf_shortcode_id,
+			},
+			success: function( data ){
+				window.location.reload();
+			}
+
+		  });
+
+    });
+
 });

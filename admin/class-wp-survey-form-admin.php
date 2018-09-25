@@ -16,6 +16,7 @@ class wp_survey_form_admin {
 		add_action( 'admin_post_nopriv_submit-form', array( $this, 'survey_form_add_record' ) );
 		add_action( 'wp_ajax_delete_form_data_action', array( $this, 'delete_form_data_action' ) );
 		add_action( 'wp_ajax_nopriv_delete_form_data_action', array( $this, 'delete_form_data_action' ) );
+		add_action( 'wp_ajax_sf_active_status_ajax_action', array( $this, 'sf_active_status_ajax_action' ) );
 	}
 
     /**
@@ -43,7 +44,8 @@ class wp_survey_form_admin {
 
 	public function load_custom_wp_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
-		wp_enqueue_script( 'jquery_validate_min', plugins_url( '/JS/jquery_validate_min.js', __FILE__ ) );
+		wp_enqueue_script( 'ajaxHandle' );
+		wp_localize_script( 'ajaxHandle', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin_ajax.php' ) ) );
 	}
 
 	public function survey_form_add_record() {
@@ -82,6 +84,21 @@ class wp_survey_form_admin {
 		}
 
 		wp_die();
+	}
+
+	function sf_active_status_ajax_action() {
+
+		global $wpdb;
+
+		$sf_active_status = isset( $_POST['sf_active_status'] ) ? $_POST['sf_active_status'] : "";
+		$sf_shortcode_id = isset( $_POST['sf_shortcode_id'] ) ? $_POST['sf_shortcode_id'] : "";
+
+		if( !empty( $sf_shortcode_id ) && !empty( $sf_active_status ) ) {
+			$wpdb->update('wp_survey_form_data', array( "survey_form_enable_disable" => $sf_active_status ), array('id'=>$sf_shortcode_id ) );
+		}
+
+		wp_die();
+
 	}
 
 }

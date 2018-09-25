@@ -1,6 +1,6 @@
 <?php
 global $wpdb;
-$result = $wpdb->get_results( "SELECT id, survey_form_name FROM wp_survey_form_data", ARRAY_A );
+$result = $wpdb->get_results( "SELECT id, survey_form_name, survey_form_enable_disable FROM wp_survey_form_data", ARRAY_A );
 if( !empty( $result ) ) {
 	?>
 	<div class="display_survey_form_section">
@@ -8,6 +8,7 @@ if( !empty( $result ) ) {
 			<thead>
 				<tr>
 					<th>shortcode</th>
+					<th>Status</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -18,6 +19,14 @@ if( !empty( $result ) ) {
 							<tr>
 								<td>
 									<input type="text" value='[generate_survey_form form_id="<?php echo $result_value['id']; ?>" form_name="<?php echo $result_value['survey_form_name']; ?>"]' readonly>
+								</td>
+								<td>
+								<div class="col-sm-3">
+								<label class="switch">
+									<input type="checkbox" <?php if( $result_value['survey_form_enable_disable'] === "Enable" ) { echo "checked"; } ?> class="checkbox_switch" id="<?php echo $result_value['id']; ?>">
+									<span class="slider round"></span>
+								</label>
+								</div>
 								</td>
 								<td>
 									<div class="action_block wrap">
