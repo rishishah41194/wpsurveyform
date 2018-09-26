@@ -17,19 +17,15 @@ jQuery( document ).ready(function() {
 
 		var enable_disable_value = jQuery(this).val();
 		
-		if( enable_disable_value === "Disable" ) {
-			jQuery( ".survey_name" ).prop('readonly', true);
+		if( enable_disable_value === "Enable" ) {
+			jQuery(".survey_form_table ").removeClass("disable_class");
 		} else {
-			jQuery( ".survey_name" ).prop('readonly', false);
+			jQuery(".survey_form_table ").addClass("disable_class");
 		}
 
 	});
 
 	var enable_disable_value = jQuery("input[name='enable/disable']:checked").val();
-
-	if( enable_disable_value === "Disable" ) {
-		jQuery( ".survey_name" ).prop('readonly', true);
-	}
 
 	jQuery(document).on("click", ".add_option" , function() {
 		jQuery('.question_option:last').clone().addClass('newClass').appendTo('.question_form_repeater');
@@ -67,6 +63,21 @@ jQuery( document ).ready(function() {
 
 		  });
 
-    });
+	});
+	
+	var enable_disable_value = jQuery("input[name='enable/disable']:checked").val();
+
+	if( enable_disable_value === "Enable" ) {
+		jQuery(".survey_form_table ").removeClass("disable_class");
+	} else {
+		jQuery(".survey_form_table ").addClass("disable_class");
+	}
+
+	jQuery(".copy").click(function() {
+		var id = jQuery(this).attr("id");
+		var copyText = document.getElementById( "myInput"+id );
+		copyText.select();
+		document.execCommand("copy");
+	});
 
 });
