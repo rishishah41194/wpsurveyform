@@ -80,4 +80,45 @@ jQuery( document ).ready(function() {
 		document.execCommand("copy");
 	});
 
+
+
+	jQuery('#add_update_survey_form').click(function(){
+
+		var allTextBoxes = [];
+		
+		jQuery('.option_class').each(function () {
+			allTextBoxes.push( jQuery(this).val() );
+		});
+
+		var sorted = [];
+		for (var i = 0; i < allTextBoxes.length; i++) {
+			sorted.push( allTextBoxes[i].toLowerCase() );
+		}
+
+		var sorted_arr = sorted.sort();
+
+		for (var i = 0; i < allTextBoxes.length - 1; i++) {
+			if (sorted_arr[i + 1] == sorted_arr[i]) {
+
+				jQuery('.option_class').each(function () {
+				
+				if( jQuery(this).val().toLowerCase() === sorted_arr[i] ) {
+					jQuery(this).addClass( "error" );
+				} else {
+					jQuery(this).removeClass( "error" );
+				}
+				});
+				return false;
+			}
+		}			
+		
+	});
+
+	jQuery('.option_class').blur(function(){
+		if( jQuery(this).val()==="" ){
+			jQuery(this).removeClass( "error" );
+		}
+	});
+
+
 });

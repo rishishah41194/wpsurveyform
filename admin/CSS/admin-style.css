@@ -15,6 +15,7 @@ lable.add_option {background: #008ec2;border-color: #006799;color: #fff;padding:
 lable.remove_option {background: #b90505;border-color: #b90505;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer; display: none;}
 .newClass .remove_option {display: inline-block;}
 .newClass .add_option {display: none;}
+input.survey_name.error{display: inline-block;}
 
 /* Rounded sliders */
 .slider.round {border-radius: 34px;}
@@ -39,3 +40,6 @@ label.delete_survey_form.button:hover {background: #ef2100;border: none;box-shad
 .copy_to_clip_board{ text-align: center; }
 .copy_to_clip_board .dashicons {color: black;}
 .copy-to-clipboard {padding: 0px 18px 0px 16px;}
+.status_table th {vertical-align: top;text-align: left;padding: 20px 10px 20px 0;width: 200px;line-height: 1.3;font-weight: 600;}
+.status_table td {padding: 0 !important;}
+.error { border: 1px solid red !important;color: red !important; }

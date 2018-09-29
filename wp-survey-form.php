@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: WP Survey Form
-Description: Just another registration form plugin. Simple but flexible.
+Description: Just another survey form plugin. Simple but flexible.
 Author: Rishi Shah
 Author URI: https://github.com/rishishah41194
 Text Domain: wp-survey-form
-Version: 1.0
+Version: 1.0.1
 */
 
 if ( ! defined( 'wp_register_form_path' ) ) {

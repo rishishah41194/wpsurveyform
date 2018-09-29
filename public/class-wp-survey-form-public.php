@@ -37,14 +37,13 @@ class wp_survey_form_public {
 			$result_front = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
 			$option_array = explode( ",", $result_front[0]['survey_form_option'] );
-
 			$count        = 1;
 			$cookie_name = "survey_form_result_cookie";
-			if( isset( $option_array ) ) {
+			if( isset( $result_front ) && !empty( $result_front ) && $result_front[0]['survey_form_enable_disable'] === "Enable" ) {
 				?>
 				<div class="main_user_block_section">
 					<div class="wrapper">
-						<label class=""><?php esc_html_e($result_front[0]['survey_form_question'], 'wp-survey-form'); ?></label>
+						<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
 						<?php
 						foreach ( $option_array as $val ) {
 							?>
