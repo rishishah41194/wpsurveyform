@@ -5,13 +5,13 @@ table.display_survey_form_table {border: 1px solid;border-collapse: collapse;wid
 .display_survey_form_table thead tr th {padding: 10px 10px 10px 10px;border: 1px solid black;}
 .delete_survey_form {float: right;}
 .button {color: rgba(30, 22, 54, 0.6);box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;}
-.edit_survey_form a {color: black;text-decoration: none;display: inline-block;}
+.edit_survey_form a {color: black;text-decoration: none;display: inline-block;padding: 2px 10px 10px 10px;}
 .display_survey_form_table thead tr th:nth-child(1) {width: 70%;}
 .error {display: block;color: #ec0000;}
 .newClass {display: inline-block;width: 100%;padding: 0 !important;}
 .question_option {display: inline-block;}
 table.survey_form_table.form-table td {padding: 0 !important;}
-lable.add_option {background: #008ec2;border-color: #006799;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;}
+lable.add_option {background: #008ec2;border-color: #006799;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer; display: inline-block;}
 lable.remove_option {background: #b90505;border-color: #b90505;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer; display: none;}
 .newClass .remove_option {display: inline-block;}
 .newClass .add_option {display: none;}
@@ -29,13 +29,13 @@ input:focus + .slider {box-shadow: 0 0 1px #2196F3;}
 input:checked + .slider:before {-webkit-transform: translateX(26px);-ms-transform: translateX(26px);transform: translateX(26px);}
 .active_deactive_buttons {margin: 25px 0px 25px 0px;}
 .disable_class {display: none;}
-label.edit_survey_form.button {padding: 2px 10px 10px 10px;background: #00a228;border-radius: 10px;border: 0; box-shadow: none;margin-right: 10px;}
+label.edit_survey_form.button {padding: 0px;background: #00a228;border-radius: 10px;border: 0; box-shadow: none;margin-right: 10px;}
 label.delete_survey_form.button {padding: 2px 10px 10px 10px;background: #ef2100;border-radius: 10px;border: 0; box-shadow: none;}
 table.display_survey_form_table .action_block.wrap{text-align: right;}
 table.display_survey_form_table .action-blk-td{width: 12%;}
 .edit_survey_form a,.edit_survey_form a:focus,.edit_survey_form a:active{outline: 0;box-shadow: none;}
 .dashicons {color: white;}
-label.edit_survey_form.button:hover {background: #00a228;border: none;box-shadow: none;padding: 2px 10px 10px 10px;}
+label.edit_survey_form.button:hover {background: #00a228;border: none;box-shadow: none;padding: 0px;}
 label.delete_survey_form.button:hover {background: #ef2100;border: none;box-shadow: none;padding: 2px 10px 10px 10px;}
 .copy_to_clip_board{ text-align: center; }
 .copy_to_clip_board .dashicons {color: black;}
