@@ -54,7 +54,7 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 									<td class="question_option <?php if ( $count > 1 ) {
 										echo "newClass";
 									} ?>">
-										<input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" value="<?php echo $sf_survey_option_array_result; ?>" required>
+										<input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" id="1" value="<?php echo $sf_survey_option_array_result; ?>" required>
 										<lable class="add_option"><span class="dashicons dashicons-plus"></span></lable>
 										<lable class="remove_option"><span class="dashicons dashicons-trash"></span></lable>
 									</td>
