@@ -58,6 +58,7 @@ class wp_survey_form_public {
 						?>
 					</div>
 					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
+					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
 				</div>
 				<?php
 			}
@@ -87,35 +88,34 @@ class wp_survey_form_public {
 
 		$option_value   = isset( $_POST['option_value'] ) ? $_POST['option_value'] : "";
 		$hidden_form_id = isset( $_POST['hidden_form_id'] ) ? $_POST['hidden_form_id'] : "";
-		$wp_option_key  = "surveyformid_" . $hidden_form_id;
+		$hidden_form_name = isset( $_POST['hidden_form_name'] ) ? $_POST['hidden_form_name'] : "";
+		$wp_option_key  = "surveyformid_{$hidden_form_id}_{$option_value}";
 
-		$get_option_value      = get_option( "survey-$hidden_form_id-$option_value" );
-		$get_option_value_data = (int) $get_option_value;
-
-		if ( ! empty( $get_option_value ) ) {
-			$count = $get_option_value_data + 1;
-			update_option( "survey-$hidden_form_id-$option_value", $count );
-		} else {
-			add_option( "survey-$hidden_form_id-$option_value", 1 );
-		}
-
-		$options_of_current_form = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$hidden_form_id' ", ARRAY_A );
-		$option_string           = $options_of_current_form[0]['survey_form_option'];
-		$option_array            = explode( ",", $option_string );
 		
-		$full_result_array = array();
-		if( !empty( $option_array ) ) {
-			foreach( $option_array as $option_array_value ) {
-				$option_value = get_option( "survey-$hidden_form_id-$option_array_value" );
-				
-				$full_result_array["survey"] = $option_value;
+		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM wp_survey_form_data_count WHERE `form_option_name` = '$wp_option_key' ", ARRAY_A );
 
-			}
+		if( isset( $options_of_current_form ) && !empty( $options_of_current_form ) ) {
+			
+			$increse_count = $options_of_current_form[0]['form_option_count'];
+			$increse_count++;
 
-			echo "<pre>";
-			print_r( $full_result_array );
+			$wpdb->update( 'wp_survey_form_data_count', array( 
+				'survey_form_id'           => $hidden_form_id,
+				'form_option_id'           => $hidden_form_id,
+				'form_option_name'           => $wp_option_key,
+				'form_option_count'           => $increse_count,
+			), array( 'form_option_name' => $wp_option_key ) );
 
+		} else {
+			$wpdb->insert( 'wp_survey_form_data_count', array(
+				'survey_form_id'           => $hidden_form_id,
+				'form_option_id'           => $hidden_form_id,
+				'form_option_name'           => $wp_option_key,
+				'form_option_count'           => 1,
+			) );
+			$record_id = $wpdb->insert_id;
 		}
+
 
 		wp_die();
 	}

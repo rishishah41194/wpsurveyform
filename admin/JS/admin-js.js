@@ -119,6 +119,10 @@ jQuery( document ).ready( function () {
 		if ( sf_str === "" ) {
 			jQuery( this ).removeClass( "error" );
 		}
-	} );
+	});
+
+	jQuery( '.reset_option' ).hover( function () {
+		alert( "vdhvh" );
+	});
 
 } );
