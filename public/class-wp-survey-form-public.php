@@ -34,6 +34,8 @@ class wp_survey_form_public {
 		$form_id   = isset( $attr['form_id'] ) ? $attr['form_id'] : "";
 		$form_name = isset( $attr['form_name'] ) ? $attr['form_name'] : "";
 
+		$array = array(  );
+
 			$result_front = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
 			$option_array = explode( ",", $result_front[0]['survey_form_option'] );
@@ -50,7 +52,7 @@ class wp_survey_form_public {
 							<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>"><?php echo $val; ?></label>
 							<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
 							<div class="prg_bar">
-								<div class="<?php echo "progressbar_{$count}" ?>"></div>
+								<div class="<?php echo "surveyformid_{$form_id}_{$val}" ?>"></div>
 							</div>
 							<?php
 							$count ++;
@@ -90,8 +92,10 @@ class wp_survey_form_public {
 		$hidden_form_id = isset( $_POST['hidden_form_id'] ) ? $_POST['hidden_form_id'] : "";
 		$hidden_form_name = isset( $_POST['hidden_form_name'] ) ? $_POST['hidden_form_name'] : "";
 		$wp_option_key  = "surveyformid_{$hidden_form_id}_{$option_value}";
-
+		$array = array();
 		
+		array_push( $array, "blue", "yellow" );
+
 		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM wp_survey_form_data_count WHERE `form_option_name` = '$wp_option_key' ", ARRAY_A );
 
 		if( isset( $options_of_current_form ) && !empty( $options_of_current_form ) ) {
@@ -104,7 +108,7 @@ class wp_survey_form_public {
 				'form_option_id'           => $hidden_form_id,
 				'form_option_name'           => $wp_option_key,
 				'form_option_count'           => $increse_count,
-			), array( 'form_option_name' => $wp_option_key ) );
+			), array( 'form_option_name' => $wp_option_key ));
 
 		} else {
 			$wpdb->insert( 'wp_survey_form_data_count', array(
@@ -112,10 +116,11 @@ class wp_survey_form_public {
 				'form_option_id'           => $hidden_form_id,
 				'form_option_name'           => $wp_option_key,
 				'form_option_count'           => 1,
-			) );
+			));
 			$record_id = $wpdb->insert_id;
 		}
 
+		setcookie( "TestCookie", $array );
 
 		wp_die();
 	}

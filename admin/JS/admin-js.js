@@ -122,7 +122,7 @@ jQuery( document ).ready( function () {
 	});
 
 	jQuery( '.reset_option' ).hover( function () {
-		alert( "vdhvh" );
+		
 	});
 
 } );
