@@ -16,7 +16,8 @@ class wp_survey_form_public {
 	public function codecanal_ajaxurl() {
 		echo '<script type="text/javascript">
            var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";
-         </script>';
+		 </script>';
+
 	}
 
 	public function load_custom_wp_public_style() {
@@ -34,13 +35,18 @@ class wp_survey_form_public {
 		$form_id   = isset( $attr['form_id'] ) ? $attr['form_id'] : "";
 		$form_name = isset( $attr['form_name'] ) ? $attr['form_name'] : "";
 
-		$array = array(  );
+		$get_cookie = isset( $_COOKIE['survey_form_cookie'] ) ? $_COOKIE['survey_form_cookie'] : "";
+
+		$jsonData = stripslashes( html_entity_decode( $get_cookie) );
+
+		$final_result = json_decode( $jsonData, true );
+
+		if( !isset ( $final_result ) && empty( $final_result ) ) {
 
 			$result_front = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
 			$option_array = explode( ",", $result_front[0]['survey_form_option'] );
 			$count        = 1;
-			$cookie_name = "survey_form_result_cookie";
 			if( isset( $result_front ) && !empty( $result_front ) && $result_front[0]['survey_form_enable_disable'] === "Enable" ) {
 				?>
 				<div class="main_user_block_section">
@@ -51,9 +57,7 @@ class wp_survey_form_public {
 							?>
 							<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>"><?php echo $val; ?></label>
 							<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
-							<div class="prg_bar">
-								<div class="<?php echo "surveyformid_{$form_id}_{$val}" ?>"></div>
-							</div>
+							<div class="<?php echo "surveyformid_{$form_id}_{$val}" ?>"></div>
 							<?php
 							$count ++;
 						}
@@ -65,8 +69,62 @@ class wp_survey_form_public {
 				<?php
 			}
 
-			$content = ob_get_contents();
-			ob_clean();
+		} else {
+
+			$result_front = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+
+			$result_from_coockie = $wpdb->get_results( "SELECT * FROM wp_survey_form_data_count WHERE `survey_form_id` = '$final_result[1]'", ARRAY_A );
+
+			$total_count_vote = "";
+			$single_option_count = array();
+
+			foreach( $result_from_coockie as $result_from_coockie_value ) {
+				$total_count_vote += $result_from_coockie_value['form_option_count'];
+			}
+			
+			foreach( $result_from_coockie as $result_from_coockie_value ) {
+				$single_option_count[] = round( $result_from_coockie_value['form_option_count'] * 100 / $total_count_vote );
+			}
+
+			$COOKIE_option_value = explode( "_", $final_result[0] );
+			
+			// echo "<pre>";
+			// print_r( $COOKIE_option_value[2] );
+			// echo "</pre>";
+
+			$option_array = explode( ",", $result_front[0]['survey_form_option'] );
+			$count        = 1;
+			$percentage_count = 0;
+			if( isset( $result_front ) && !empty( $result_front ) && $result_front[0]['survey_form_enable_disable'] === "Enable" ) {
+				?>
+				<div class="main_user_block_section" id="disabled">
+					<div class="wrapper">
+						<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
+						<?php
+						foreach ( $option_array as $val ) {
+							?>
+							<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>" <?php if( $COOKIE_option_value[2] === $val ){ echo "checked"; } ?>><?php echo $val; ?></label>
+							<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
+							<div class="prg_bar" id="<?php echo $single_option_count[$percentage_count]; ?>">
+								<div id="progress_bar" class="<?php echo "surveyformid_{$form_id}_{$val}" ?>" style="width:<?php echo $single_option_count[$percentage_count]."%"; ?>; background:#05f50f;display: inline-block;height: 20px;border-radius: 50px;"><?php echo isset( $single_option_count[$percentage_count] ) ? $single_option_count[$percentage_count]."%" : "0"; ?></div>
+							</div>
+							<?php
+							$count ++;
+							$percentage_count ++;
+						}
+						?>
+					</div>
+					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
+					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
+				</div>
+				<?php
+			}
+
+		}
+
+
+		$content = ob_get_contents();
+		ob_clean();
 	
 		
 		/**
@@ -92,9 +150,9 @@ class wp_survey_form_public {
 		$hidden_form_id = isset( $_POST['hidden_form_id'] ) ? $_POST['hidden_form_id'] : "";
 		$hidden_form_name = isset( $_POST['hidden_form_name'] ) ? $_POST['hidden_form_name'] : "";
 		$wp_option_key  = "surveyformid_{$hidden_form_id}_{$option_value}";
-		$array = array();
+		$survey_form_array = array();
 		
-		array_push( $array, "blue", "yellow" );
+		array_push( $survey_form_array, $wp_option_key, $hidden_form_id );
 
 		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM wp_survey_form_data_count WHERE `form_option_name` = '$wp_option_key' ", ARRAY_A );
 
@@ -120,7 +178,7 @@ class wp_survey_form_public {
 			$record_id = $wpdb->insert_id;
 		}
 
-		setcookie( "TestCookie", $array );
+		setcookie('survey_form_cookie', json_encode($survey_form_array), (time()+3600), "/");
 
 		wp_die();
 	}

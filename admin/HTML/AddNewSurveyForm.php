@@ -56,20 +56,7 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 									} ?>">
 										<input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" id="1" value="<?php echo $sf_survey_option_array_result; ?>" required>
 										<lable class="add_option"><span class="dashicons dashicons-plus"></span></lable>
-										<lable class="remove_option"><span class="dashicons dashicons-trash"></span></lable>
-										<?php
-											if( isset( $sf_form_id ) ) {
-												$reset_count_key = "surveyformid_{$sf_form_id}_{$sf_survey_option_array_result}";
-												$sf_total_count  = $wpdb->get_results( "SELECT form_option_count FROM `wp_survey_form_data_count` WHERE `form_option_name` = '$reset_count_key'", ARRAY_A );
-												?>
-													<lable class="reset_option">
-														<span class="<?php echo $reset_count_key; ?>">Reset Count</span>
-														<input type="hidden" value="<?php echo isset( $sf_total_count[0]['form_option_count'] ) ? $sf_total_count[0]['form_option_count'] : "1"; ?>" class="reset_count">
-													</lable>
-												<?php												
-											}
-										?>
-
+										<lable class="remove_option"><span class="dashicons dashicons-trash" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>"></span></lable>
 									</td>
 									<?php
 									$count ++;

@@ -17,6 +17,7 @@ class wp_survey_form_admin {
 		add_action( 'wp_ajax_delete_form_data_action', array( $this, 'sf_delete_form_data_action' ) );
 		add_action( 'wp_ajax_nopriv_delete_form_data_action', array( $this, 'sf_delete_form_data_action' ) );
 		add_action( 'wp_ajax_sf_active_status_ajax_action', array( $this, 'sf_active_status_ajax_action' ) );
+		add_action( 'wp_ajax_sf_closest_option_name_remove', array( $this, 'sf_closest_option_name_remove' ) );
 	}
 
 	/**
@@ -100,6 +101,26 @@ class wp_survey_form_admin {
 		if ( ! empty( $sf_shortcode_id ) && ! empty( $sf_active_status ) ) {
 			$wpdb->update( 'wp_survey_form_data', array( "survey_form_enable_disable" => $sf_active_status ), array( 'id' => $sf_shortcode_id ) );
 		}
+
+		wp_die();
+
+	}
+
+	function sf_closest_option_name_remove() {
+
+		global $wpdb;
+
+		$closest_option_name = isset( $_POST[ 'closest_option_name' ] ) ? $_POST[ 'closest_option_name' ] : "";
+		$wpdb->delete( 'wp_survey_form_data_count', array( 'form_option_name' => $closest_option_name ) );
+
+		$get_cookie = isset( $_COOKIE['survey_form_cookie'] ) ? $_COOKIE['survey_form_cookie'] : "";
+		$jsonData = stripslashes( html_entity_decode( $get_cookie) );
+		$final_result = json_decode( $jsonData, true );
+
+		if( $final_result[0] === $closest_option_name ) {
+			setcookie('survey_form_cookie', "", (time()+3600), "/");
+		}
+
 
 		wp_die();
 

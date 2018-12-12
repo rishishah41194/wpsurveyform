@@ -33,7 +33,26 @@ jQuery( document ).ready( function () {
 	} );
 
 	jQuery( document ).on( "click", ".remove_option", function () {
+
+		var closest_option_name = jQuery( this ).find( "span" ).attr("id");
+
+		var ajaxurl = "/wp-admin/admin-ajax.php";
+
+		jQuery.ajax( {
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'sf_closest_option_name_remove',
+				closest_option_name: closest_option_name,
+			},
+			success: function ( data ) {
+				
+			}
+
+		} );
+
 		jQuery( this ).closest( "td" ).remove();
+
 	} );
 
 	jQuery( '.checkbox_switch' ).change( function () {
