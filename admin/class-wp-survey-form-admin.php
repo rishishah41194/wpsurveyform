@@ -1,12 +1,14 @@
 <?php
 
+/**
+ * wp_survey_form_admin class for all the admin actions and functions.
+ * 
+ */
 class wp_survey_form_admin {
 
 	/**
-	 * Initializes WordPress hooks
+	 * Initializes WordPress hooks.
 	 *
-	 * Author: Rishi Shah
-	 * Since: 1.0
 	 */
 	function __construct() {
 		add_action( 'admin_menu', array( $this, 'sf_wp_survey_form_admin_side' ) );
@@ -21,34 +23,52 @@ class wp_survey_form_admin {
 	}
 
 	/**
-	 * Added Pages in Menu for Settings
+	 * Added Pages in Menu for Settings.
 	 *
-	 * Author: Rishi Shah
-	 * Since: 1.0
 	 */
 	public function sf_wp_survey_form_admin_side() {
 		add_menu_page( 'Add New Survey Form', 'Add New Survey Form', 'administrator', 'add_new_survey_form', array( $this, 'sf_add_new_survey_form' ), 'dashicons-forms' );
 		add_submenu_page( 'add_new_survey_form', 'Display Survey Form', 'Display Survey Form', 'manage_options', 'display_survey_form', array( $this, 'sf_display_survey_form' ) );
 	}
 
+	/**
+	 * sf_add_new_survey_form function for call Add New Survey Form template.
+	 *
+	 */
 	public function sf_add_new_survey_form() {
 		require_once( wp_survey_form_path . '/admin/HTML/AddNewSurveyForm.php' );
 	}
 
+	/**
+	 * sf_display_survey_form function for call Diplay Survey Form template.
+	 *
+	 */
 	public function sf_display_survey_form() {
 		require_once( wp_survey_form_path . '/admin/HTML/DisplaySurveyForm.php' );
 	}
 
+	/**
+	 * sf_load_custom_wp_admin_style function for load admin style sheet.
+	 *
+	 */
 	public function sf_load_custom_wp_admin_style() {
 		wp_enqueue_style( 'admin-css', plugins_url( '/CSS/admin-style.css', __FILE__ ) );
 	}
 
+	/**
+	 * sf_load_custom_wp_admin_script function for load admin JS sheet.
+	 *
+	 */
 	public function sf_load_custom_wp_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
 		wp_enqueue_script( 'ajaxHandle' );
 		wp_localize_script( 'ajaxHandle', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin_ajax.php' ) ) );
 	}
 
+	/**
+	 * sf_survey_form_add_record function for insert form record.
+	 *
+	 */
 	public function sf_survey_form_add_record() {
 		global $wpdb;
 
@@ -79,6 +99,10 @@ class wp_survey_form_admin {
 		}
 	}
 
+	/**
+	 * sf_delete_form_data_action function for delete form record.
+	 *
+	 */
 	public function sf_delete_form_data_action() {
 		global $wpdb;
 
@@ -91,6 +115,10 @@ class wp_survey_form_admin {
 		wp_die();
 	}
 
+	/**
+	 * sf_active_status_ajax_action function for uodate Active status of form.
+	 *
+	 */
 	function sf_active_status_ajax_action() {
 
 		global $wpdb;
@@ -106,6 +134,10 @@ class wp_survey_form_admin {
 
 	}
 
+	/**
+	 * sf_closest_option_name_remove function for remove option of any form.
+	 *
+	 */
 	function sf_closest_option_name_remove() {
 
 		global $wpdb;
@@ -120,7 +152,6 @@ class wp_survey_form_admin {
 		if( $final_result[0] === $closest_option_name ) {
 			setcookie('survey_form_cookie', "", (time()+3600), "/");
 		}
-
 
 		wp_die();
 

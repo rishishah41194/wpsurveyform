@@ -3,18 +3,33 @@
 Plugin Name: WP Survey Form
 Description: Just another survey form plugin. Simple but flexible.
 Author: Rishi Shah
-Author URI: https://github.com/rishishah41194
+Author URI: http://rishirshah.com
 Text Domain: wp-survey-form
 Version: 1.0.1
 */
 
+/**
+ * 
+ * Define all the global constant.
+ * 
+ */
 if ( ! defined( 'wp_register_form_path' ) ) {
 	define( 'wp_survey_form_path', plugin_dir_path( __FILE__ ) );
 }
 
-register_activation_hook( __FILE__, 'my_plugin_create_db' );
+/**
+ * 
+ * Plugin Activation hook for create DB tables.
+ * 
+ */
+register_activation_hook( __FILE__, 'sf_create_db' );
 
-function my_plugin_create_db() {
+/**
+ * 
+ * Plugin Activation function for create DB tables.
+ * 
+ */
+function sf_create_db() {
 
 	global $wpdb;
 	$charset_collate = $wpdb->get_charset_collate();
@@ -50,10 +65,20 @@ function my_plugin_create_db() {
 
 }
 
+/**
+ * 
+ * Create a new instant for admin class.
+ */
 if ( is_admin() ) {
 	require_once( wp_survey_form_path . '/admin/class-wp-survey-form-admin.php' );
 	new wp_survey_form_admin();
 }
 
-require_once( wp_survey_form_path . '/public/class-wp-survey-form-public.php' );
-new wp_survey_form_public();
+/**
+ * 
+ * Create a new instant for public class.
+ */
+if ( ! is_admin() ) {
+	require_once( wp_survey_form_path . '/public/class-wp-survey-form-public.php' );
+	new wp_survey_form_public();
+}
