@@ -18,7 +18,7 @@ jQuery( document ).ready(function() {
 				hidden_form_name: hidden_form_name,
 			},
 			success: function( data ) {
-				//document.location.reload();
+				document.location.reload();
 			}
 
 		});

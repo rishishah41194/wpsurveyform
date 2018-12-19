@@ -66,51 +66,59 @@ class sf_survey_form_public {
 
 			$result_front = $wpdb->get_results( "SELECT * FROM  wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
-			$result_from_coockie = $wpdb->get_results( "SELECT * FROM wp_survey_form_data_count WHERE `survey_form_id` = '$final_result[1]'", ARRAY_A );
+			if ( ! empty( $result_front ) && isset( $result_front ) ) {
 
-			$total_count_vote    = "";
-			$single_option_count = array();
+				foreach ( $result_front as $result_front_data ) {
+					$id = $result_front_data['id'];
 
-			foreach ( $result_from_coockie as $result_from_coockie_value ) {
-				$total_count_vote += $result_from_coockie_value['form_option_count'];
-			}
+					$result_from_coockie = $wpdb->get_results( "SELECT * FROM wp_survey_form_data_count WHERE `survey_form_id` = '$id'", ARRAY_A );
+					$total_count_vote    = "";
+					$single_option_count = array();
 
-			foreach ( $result_from_coockie as $result_from_coockie_value ) {
-				$single_option_count[] = round( $result_from_coockie_value['form_option_count'] * 100 / $total_count_vote );
-			}
+					foreach ( $result_from_coockie as $result_from_coockie_value ) {
+						$total_count_vote += $result_from_coockie_value['form_option_count'];
+					}
 
-			$COOKIE_option_value = explode( "_", $final_result[0] );
+					foreach ( $result_from_coockie as $result_from_coockie_value ) {
+						$single_option_count[] = round( $result_from_coockie_value['form_option_count'] * 100 / $total_count_vote );
+					}
 
-			$option_array     = explode( ",", $result_front[0]['survey_form_option'] );
-			$count            = 1;
-			$percentage_count = 0;
-			if ( isset( $result_front ) && ! empty( $result_front ) && $result_front[0]['survey_form_enable_disable'] === "Enable" ) {
-				?>
-				<div class="main_user_block_section" id="disabled">
-					<div class="wrapper">
-						<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
-						<div class="option_group">
+					$COOKIE_option_value = explode( "_", $final_result[0] );
+					$count            = 1;
+					$percentage_count = 0;
+					
+					if( isset( $result_from_coockie ) && !empty( $result_from_coockie ) && $result_front_data['survey_form_enable_disable'] === "Enable" ) {
+						?>
+						<div class="main_user_block_section" id="disabled">
+							<label class=""><?php esc_html_e( $result_front_data['survey_form_name'], 'wp-survey-form' ); ?></label>
 							<?php
-							foreach ( $option_array as $val ) {
-								?>
-								<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>" <?php if ( $COOKIE_option_value[2] === $val ) {
-										echo "checked";
-									} ?>><?php echo $val; ?></label>
-								<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
-								<div class="prg_bar" id="<?php echo $single_option_count[ $percentage_count ]; ?>">
-									<div id="progress_bar" class="<?php echo "surveyformid_{$form_id}_{$val}" ?>" style="width:<?php echo $single_option_count[ $percentage_count ] . "%"; ?>; background:#05f50f;display: block;height: 30px;border-radius: 50px;"><?php echo isset( $single_option_count[ $percentage_count ] ) ? $single_option_count[ $percentage_count ] . "%" : "0%"; ?></div>
-								</div>
-								<?php
-								$count ++;
-								$percentage_count ++;
-							}
+								foreach ( $result_from_coockie as $result_from_coockie_data ) {
+									$option_name = explode( "_", $result_from_coockie_data['form_option_name'] );
+									?>
+										<div class="wrapper">
+											<label class=""><input type="radio" name="survey_option" value="<?php echo $option_name[2]; ?>" <?php if ( $COOKIE_option_value[2] === $option_name[2] ) {
+													echo "checked";
+												} ?>><?php echo $option_name[2]; ?></label>
+											<input type="hidden" class="<?php echo $result_from_coockie_data['form_option_name']; ?>" value="">
+											<div class="prg_bar" id="<?php echo $single_option_count[ $percentage_count ]; ?>">
+												<div id="progress_bar" class="<?php echo $result_from_coockie_data['form_option_name']; ?>" style="width:<?php echo $single_option_count[ $percentage_count ] . "%"; ?>; background:#05f50f;display: block;height: 30px;border-radius: 50px;"><?php echo isset( $single_option_count[ $percentage_count ] ) ? $single_option_count[ $percentage_count ] . "%" : "0%"; ?></div>
+											</div>
+											<?php
+											$count ++;
+											$percentage_count ++;
+											?>
+										</div>
+										<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
+										<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
+									<?php
+								}
 							?>
 						</div>
-					</div>
-					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
-					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
-				</div>
-				<?php
+						<?php
+					}
+
+				}
+
 			}
 
 		}
