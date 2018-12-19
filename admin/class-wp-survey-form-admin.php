@@ -95,7 +95,7 @@ class sf_survey_form_admin {
 					'survey_form_enable_disable' => trim( $survey_form_enable_disable ),
 				) );
 			$record_id = $wpdb->insert_id;
-			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form" );
+			wp_safe_redirect( "/wp-admin/admin.php?page=display_survey_form" );
 		}
 	}
 

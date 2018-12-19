@@ -8,16 +8,20 @@ jQuery( document ).ready(function() {
 		var hidden_form_id = jQuery(".hidden_form_id").val();
 		var hidden_form_name = jQuery(".hidden_form_name").val();
 		
-		var data = {
-			'action': 'my_action',
-			'whatever': 1234
-		};
+		jQuery.ajax({
+			url: ajax_object.ajaxurl,
+			type: 'POST',
+			data:{
+				action: 'submit_survey_form_ajax_new',
+				option_value: option_value,
+				hidden_form_id: hidden_form_id,
+				hidden_form_name: hidden_form_name,
+			},
+			success: function( data ) {
+				//document.location.reload();
+			}
 
-		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-		jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
-			alert('Got this from the server: ' + response);
 		});
-		
 	});
 
 	});

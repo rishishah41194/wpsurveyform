@@ -78,7 +78,4 @@ if ( is_admin() ) {
  * 
  * Create a new instant for public class.
  */
-if ( ! is_admin() ) {
-	require_once( sf_survey_form_path . '/public/class-wp-survey-form-public.php' );
-	new sf_survey_form_public();
-}
+require_once( sf_survey_form_path . '/public/class-wp-survey-form-public.php' );

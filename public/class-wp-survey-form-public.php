@@ -8,48 +8,15 @@ class sf_survey_form_public {
 	function __construct() {
 		add_shortcode( 'generate_survey_form', array( $this, 'generate_survey_form' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_custom_sf_public_style' ) );
-		add_action( 'wp_head', array( $this, 'codecanal_ajaxurl' ) );
-		add_action( 'wp_ajax_submit_survey_form_ajax', array( $this, 'submit_survey_form_ajax' ) );
-		add_action('wp_print_scripts', array($this,'test_ajax_load_scripts'));
-		//add_action( 'wp_ajax_nopriv_submit_survey_form_ajax', array( $this, 'submit_survey_form_ajax' ) );
-
-		add_action( 'wp_ajax_nopriv_test', array( $this, 'sf_ajax_submit_form' ) );
-		add_action( 'wp_ajax_sf_test', array( $this, 'sf_ajax_submit_form' ) );
-
-		add_action( 'wp_ajax_my_action', array( $this, 'my_action' ));
-		add_action( 'wp_ajax_nopriv_my_action',  array( $this,'my_action' ));
-	}
-
-	public function my_action() {
-		echo "tssss";die;
-	}
-
-	public function codecanal_ajaxurl() {
-		
-
-		 // Localize the script with new data
-$translation_array = array(
-	'ajaxurl' => admin_url( 'admin-ajax.php' ),
-	'a_value' => '10'
-);
-wp_localize_script( 'some_handle', 'object_name', $translation_array );
-
-	}
-	public function test_ajax_load_scripts() {
-		// load our jquery file that sends the $.post request
-		wp_enqueue_script( "ajax-test", plugin_dir_url( __FILE__ ) . '/JS/public-JS.js', array( 'jquery' ) );
-	 
-		// make the ajaxurl var available to the above script
-		wp_localize_script( 'ajax-test', 'the_ajax_script', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );	
+		add_action( 'wp_ajax_submit_survey_form_ajax_new', array($this, 'submit_survey_form_ajax_new') );
+		add_action( 'wp_ajax_nopriv_submit_survey_form_ajax_new', array($this, 'submit_survey_form_ajax_new')  );
 	}
 
 	public function load_custom_sf_public_style() {
 		wp_enqueue_script('jquery');
 		wp_enqueue_style( 'public-css', plugins_url( '/CSS/public-style.css', __FILE__ ) );
-		//wp_enqueue_style( 'UI-css', 'http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-		//wp_enqueue_script( 'public-JS', plugins_url( '/JS/public-JS.js', __FILE__ ), array(), false, true );
-		//wp_enqueue_script( 'UI-JS', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js', array(), false, true );
-	//	wp_localize_script( 'custom_js', 'ajax_object', array('ajaxurl' => admin_url( 'admin-ajax.php' ), ) );
+		wp_enqueue_script( 'public-JS', plugins_url( '/JS/public-JS.js', __FILE__ ), array(), false, true );
+		wp_localize_script( 'public-JS', 'ajax_object', array('ajaxurl' => admin_url( 'admin-ajax.php' ), ) );
 	}
 
 	public function generate_survey_form( $attr ) {
@@ -76,16 +43,18 @@ wp_localize_script( 'some_handle', 'object_name', $translation_array );
 				<div class="main_user_block_section">
 					<div class="wrapper">
 						<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
-						<?php
-						foreach ( $option_array as $val ) {
-							?>
-							<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>"><?php echo $val; ?></label>
-							<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
-							<div class="<?php echo "surveyformid_{$form_id}_{$val}" ?>"></div>
+						<div class="option_group">
 							<?php
-							$count ++;
-						}
-						?>
+							foreach ( $option_array as $val ) {
+								?>
+								<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>"><?php echo $val; ?></label>
+								<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
+								<div class="<?php echo "surveyformid_{$form_id}_{$val}" ?>"></div>
+								<?php
+								$count ++;
+							}
+							?>
+						</div>
 					</div>
 					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
 					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
@@ -124,19 +93,21 @@ wp_localize_script( 'some_handle', 'object_name', $translation_array );
 				<div class="main_user_block_section" id="disabled">
 					<div class="wrapper">
 						<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
-						<?php
-						foreach ( $option_array as $val ) {
-							?>
-							<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>" <?php if( $COOKIE_option_value[2] === $val ){ echo "checked"; } ?>><?php echo $val; ?></label>
-							<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
-							<div class="prg_bar" id="<?php echo $single_option_count[$percentage_count]; ?>">
-								<div id="progress_bar" class="<?php echo "surveyformid_{$form_id}_{$val}" ?>" style="width:<?php echo $single_option_count[$percentage_count]."%"; ?>; background:#05f50f;display: inline-block;height: 20px;border-radius: 50px;"><?php echo isset( $single_option_count[$percentage_count] ) ? $single_option_count[$percentage_count]."%" : "0"; ?></div>
-							</div>
-							<?php
-							$count ++;
-							$percentage_count ++;
-						}
-						?>
+							<div class="option_group">
+								<?php
+								foreach ( $option_array as $val ) {
+									?>
+									<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>" <?php if( $COOKIE_option_value[2] === $val ){ echo "checked"; } ?>><?php echo $val; ?></label>
+									<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
+									<div class="prg_bar" id="<?php echo $single_option_count[$percentage_count]; ?>">
+										<div id="progress_bar" class="<?php echo "surveyformid_{$form_id}_{$val}" ?>" style="width:<?php echo $single_option_count[$percentage_count]."%"; ?>; background:#05f50f;display: block;height: 30px;border-radius: 50px;"><?php echo isset( $single_option_count[$percentage_count] ) ? $single_option_count[$percentage_count]."%" : "0%"; ?></div>
+									</div>
+									<?php
+									$count ++;
+									$percentage_count ++;
+								}
+								?>
+						</div>
 					</div>
 					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
 					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
@@ -166,10 +137,9 @@ wp_localize_script( 'some_handle', 'object_name', $translation_array );
 
 	}
 
-	function sf_ajax_submit_form1() {
+	function submit_survey_form_ajax_new() {
 
 		global $wpdb;
-
 		$option_value   = isset( $_POST['option_value'] ) ? $_POST['option_value'] : "";
 		$hidden_form_id = isset( $_POST['hidden_form_id'] ) ? $_POST['hidden_form_id'] : "";
 		$hidden_form_name = isset( $_POST['hidden_form_name'] ) ? $_POST['hidden_form_name'] : "";
@@ -206,10 +176,5 @@ wp_localize_script( 'some_handle', 'object_name', $translation_array );
 
 		wp_die();
 	}
-
-	public function sf_ajax_submit_form() {
-		echo "tet";
-		die();
-	}
-
 }
+$public_class = new sf_survey_form_public();
