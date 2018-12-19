@@ -2,7 +2,7 @@
 
 /**
  * sf_survey_form_admin class for all the admin actions and functions.
- * 
+ *
  */
 class sf_survey_form_admin {
 
@@ -81,19 +81,20 @@ class sf_survey_form_admin {
 		$question_option_string       = implode( ",", $question_option_remove_blank );
 
 		if ( ! empty( $id ) ) {
-			$wpdb->update( 'wp_survey_form_data', array( 'survey_form_name'           => trim( $survey_name ),
-			                                             'survey_form_question'       => trim( $survey_question ),
-			                                             'survey_form_option'         => trim( $question_option_string ),
-			                                             'survey_form_enable_disable' => $survey_form_enable_disable,
+			$wpdb->update( 'wp_survey_form_data', array(
+				'survey_form_name'           => trim( $survey_name ),
+				'survey_form_question'       => trim( $survey_question ),
+				'survey_form_option'         => trim( $question_option_string ),
+				'survey_form_enable_disable' => $survey_form_enable_disable,
 			), array( 'id' => $id ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form&id=$id" );
 		} else {
 			$wpdb->insert( 'wp_survey_form_data', array(
-					'survey_form_name'           => trim( $survey_name ),
-					'survey_form_question'       => trim( $survey_question ),
-					'survey_form_option'         => trim( $question_option_string ),
-					'survey_form_enable_disable' => trim( $survey_form_enable_disable ),
-				) );
+				'survey_form_name'           => trim( $survey_name ),
+				'survey_form_question'       => trim( $survey_question ),
+				'survey_form_option'         => trim( $question_option_string ),
+				'survey_form_enable_disable' => trim( $survey_form_enable_disable ),
+			) );
 			$record_id = $wpdb->insert_id;
 			wp_safe_redirect( "/wp-admin/admin.php?page=display_survey_form" );
 		}
@@ -142,15 +143,15 @@ class sf_survey_form_admin {
 
 		global $wpdb;
 
-		$closest_option_name = isset( $_POST[ 'closest_option_name' ] ) ? $_POST[ 'closest_option_name' ] : "";
+		$closest_option_name = isset( $_POST['closest_option_name'] ) ? $_POST['closest_option_name'] : "";
 		$wpdb->delete( 'sf_survey_form_data_count', array( 'form_option_name' => $closest_option_name ) );
 
-		$get_cookie = isset( $_COOKIE['survey_form_cookie'] ) ? $_COOKIE['survey_form_cookie'] : "";
-		$jsonData = stripslashes( html_entity_decode( $get_cookie) );
+		$get_cookie   = isset( $_COOKIE['survey_form_cookie'] ) ? $_COOKIE['survey_form_cookie'] : "";
+		$jsonData     = stripslashes( html_entity_decode( $get_cookie ) );
 		$final_result = json_decode( $jsonData, true );
 
-		if( $final_result[0] === $closest_option_name ) {
-			setcookie('survey_form_cookie', "", (time()+3600), "/");
+		if ( $final_result[0] === $closest_option_name ) {
+			setcookie( 'survey_form_cookie', "", ( time() + 3600 ), "/" );
 		}
 
 		wp_die();

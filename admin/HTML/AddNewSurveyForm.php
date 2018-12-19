@@ -12,7 +12,6 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 			<h1><?php esc_html_e( 'Add New Survey Form', 'wp-survey-form' ); ?></h1>
 			<div class="form">
 				<form action='<?php echo get_admin_url(); ?>admin-post.php' method="post" name="survey_form" id="add_new_survey_form" class="repeater">
-
 					<div class="active_deactive_buttons">
 						<table class="status_table">
 							<tr>
@@ -56,7 +55,8 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 									} ?>">
 										<input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" id="1" value="<?php echo $sf_survey_option_array_result; ?>" required>
 										<lable class="add_option"><span class="dashicons dashicons-plus"></span></lable>
-										<lable class="remove_option"><span class="dashicons dashicons-trash" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>"></span></lable>
+										<lable class="remove_option">
+											<span class="dashicons dashicons-trash" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>"></span></lable>
 									</td>
 									<?php
 									$count ++;

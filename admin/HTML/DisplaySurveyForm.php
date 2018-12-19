@@ -9,14 +9,11 @@ if ( ! empty( $sf_result_shortcode ) ) {
 	<div class="display_survey_form_section">
 
 		<?php
-
 		/**
 		 * Before Display Survey Form Table.
 		 *
 		 * @since 1.0.0
-		 *
 		 * @param array $sf_result_shortcode
-		 *
 		 */
 		do_action( 'sf_before_display_survey_form_table', $sf_result_shortcode );
 		?>
@@ -69,9 +66,7 @@ if ( ! empty( $sf_result_shortcode ) ) {
 		 * After Display Survey Form Table.
 		 *
 		 * @since 1.0.0
-		 *
 		 * @param array $sf_result_shortcode_value
-		 *
 		 */
 		do_action( 'sf_after_display_survey_form_table', $sf_result_shortcode_value );
 		?>
