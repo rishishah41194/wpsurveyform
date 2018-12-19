@@ -13,8 +13,8 @@ Version: 1.0.1
  * Define all the global constant.
  * 
  */
-if ( ! defined( 'wp_register_form_path' ) ) {
-	define( 'wp_survey_form_path', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'sf_register_form_path' ) ) {
+	define( 'sf_survey_form_path', plugin_dir_path( __FILE__ ) );
 }
 
 /**
@@ -70,8 +70,8 @@ function sf_create_db() {
  * Create a new instant for admin class.
  */
 if ( is_admin() ) {
-	require_once( wp_survey_form_path . '/admin/class-wp-survey-form-admin.php' );
-	new wp_survey_form_admin();
+	require_once( sf_survey_form_path . '/admin/class-wp-survey-form-admin.php' );
+	new sf_survey_form_admin();
 }
 
 /**
@@ -79,6 +79,6 @@ if ( is_admin() ) {
  * Create a new instant for public class.
  */
 if ( ! is_admin() ) {
-	require_once( wp_survey_form_path . '/public/class-wp-survey-form-public.php' );
-	new wp_survey_form_public();
+	require_once( sf_survey_form_path . '/public/class-wp-survey-form-public.php' );
+	new sf_survey_form_public();
 }

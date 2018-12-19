@@ -1,31 +1,55 @@
 <?php
 
-class wp_survey_form_public {
+class sf_survey_form_public {
 
 	/**
 	 * Initializes WordPress hooks
 	 */
 	function __construct() {
 		add_shortcode( 'generate_survey_form', array( $this, 'generate_survey_form' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_custom_wp_public_style' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_custom_sf_public_style' ) );
 		add_action( 'wp_head', array( $this, 'codecanal_ajaxurl' ) );
 		add_action( 'wp_ajax_submit_survey_form_ajax', array( $this, 'submit_survey_form_ajax' ) );
-		add_action( 'wp_ajax_nopriv_submit_survey_form_ajax', array( $this, 'submit_survey_form_ajax' ) );
+		add_action('wp_print_scripts', array($this,'test_ajax_load_scripts'));
+		//add_action( 'wp_ajax_nopriv_submit_survey_form_ajax', array( $this, 'submit_survey_form_ajax' ) );
+
+		add_action( 'wp_ajax_nopriv_test', array( $this, 'sf_ajax_submit_form' ) );
+		add_action( 'wp_ajax_sf_test', array( $this, 'sf_ajax_submit_form' ) );
+
+		add_action( 'wp_ajax_my_action', array( $this, 'my_action' ));
+		add_action( 'wp_ajax_nopriv_my_action',  array( $this,'my_action' ));
+	}
+
+	public function my_action() {
+		echo "tssss";die;
 	}
 
 	public function codecanal_ajaxurl() {
-		echo '<script type="text/javascript">
-           var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";
-		 </script>';
+		
+
+		 // Localize the script with new data
+$translation_array = array(
+	'ajaxurl' => admin_url( 'admin-ajax.php' ),
+	'a_value' => '10'
+);
+wp_localize_script( 'some_handle', 'object_name', $translation_array );
 
 	}
+	public function test_ajax_load_scripts() {
+		// load our jquery file that sends the $.post request
+		wp_enqueue_script( "ajax-test", plugin_dir_url( __FILE__ ) . '/JS/public-JS.js', array( 'jquery' ) );
+	 
+		// make the ajaxurl var available to the above script
+		wp_localize_script( 'ajax-test', 'the_ajax_script', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );	
+	}
 
-	public function load_custom_wp_public_style() {
+	public function load_custom_sf_public_style() {
+		wp_enqueue_script('jquery');
 		wp_enqueue_style( 'public-css', plugins_url( '/CSS/public-style.css', __FILE__ ) );
-		wp_enqueue_style( 'UI-css', 'http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-		wp_enqueue_script( 'public-JS', plugins_url( '/JS/public-JS.js', __FILE__ ), array(), false, true );
-		wp_enqueue_script( 'UI-JS', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js', array(), false, true );
-		wp_localize_script( 'custom_js', 'ajax_object', array('ajaxurl' => admin_url( 'admin-ajax.php' ), ) );
+		//wp_enqueue_style( 'UI-css', 'http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+		//wp_enqueue_script( 'public-JS', plugins_url( '/JS/public-JS.js', __FILE__ ), array(), false, true );
+		//wp_enqueue_script( 'UI-JS', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js', array(), false, true );
+	//	wp_localize_script( 'custom_js', 'ajax_object', array('ajaxurl' => admin_url( 'admin-ajax.php' ), ) );
 	}
 
 	public function generate_survey_form( $attr ) {
@@ -71,7 +95,7 @@ class wp_survey_form_public {
 
 		} else {
 
-			$result_front = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+			$result_front = $wpdb->get_results( "SELECT * FROM  wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
 			$result_from_coockie = $wpdb->get_results( "SELECT * FROM wp_survey_form_data_count WHERE `survey_form_id` = '$final_result[1]'", ARRAY_A );
 
@@ -142,19 +166,19 @@ class wp_survey_form_public {
 
 	}
 
-	public function submit_survey_form_ajax() {
+	function sf_ajax_submit_form1() {
 
 		global $wpdb;
 
 		$option_value   = isset( $_POST['option_value'] ) ? $_POST['option_value'] : "";
 		$hidden_form_id = isset( $_POST['hidden_form_id'] ) ? $_POST['hidden_form_id'] : "";
 		$hidden_form_name = isset( $_POST['hidden_form_name'] ) ? $_POST['hidden_form_name'] : "";
-		$wp_option_key  = "surveyformid_{$hidden_form_id}_{$option_value}";
+		$sf_option_key  = "surveyformid_{$hidden_form_id}_{$option_value}";
 		$survey_form_array = array();
 		
-		array_push( $survey_form_array, $wp_option_key, $hidden_form_id );
+		array_push( $survey_form_array, $sf_option_key, $hidden_form_id );
 
-		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM wp_survey_form_data_count WHERE `form_option_name` = '$wp_option_key' ", ARRAY_A );
+		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM wp_survey_form_data_count WHERE `form_option_name` = '$sf_option_key' ", ARRAY_A );
 
 		if( isset( $options_of_current_form ) && !empty( $options_of_current_form ) ) {
 			
@@ -164,15 +188,15 @@ class wp_survey_form_public {
 			$wpdb->update( 'wp_survey_form_data_count', array( 
 				'survey_form_id'           => $hidden_form_id,
 				'form_option_id'           => $hidden_form_id,
-				'form_option_name'           => $wp_option_key,
+				'form_option_name'           => $sf_option_key,
 				'form_option_count'           => $increse_count,
-			), array( 'form_option_name' => $wp_option_key ));
+			), array( 'form_option_name' => $sf_option_key ));
 
 		} else {
 			$wpdb->insert( 'wp_survey_form_data_count', array(
 				'survey_form_id'           => $hidden_form_id,
 				'form_option_id'           => $hidden_form_id,
-				'form_option_name'           => $wp_option_key,
+				'form_option_name'           => $sf_option_key,
 				'form_option_count'           => 1,
 			));
 			$record_id = $wpdb->insert_id;
@@ -181,6 +205,11 @@ class wp_survey_form_public {
 		setcookie('survey_form_cookie', json_encode($survey_form_array), (time()+3600), "/");
 
 		wp_die();
+	}
+
+	public function sf_ajax_submit_form() {
+		echo "tet";
+		die();
 	}
 
 }

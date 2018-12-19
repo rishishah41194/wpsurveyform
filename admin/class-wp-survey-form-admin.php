@@ -1,19 +1,19 @@
 <?php
 
 /**
- * wp_survey_form_admin class for all the admin actions and functions.
+ * sf_survey_form_admin class for all the admin actions and functions.
  * 
  */
-class wp_survey_form_admin {
+class sf_survey_form_admin {
 
 	/**
 	 * Initializes WordPress hooks.
 	 *
 	 */
 	function __construct() {
-		add_action( 'admin_menu', array( $this, 'sf_wp_survey_form_admin_side' ) );
-		add_action( 'admin_print_styles', array( $this, 'sf_load_custom_wp_admin_style' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'sf_load_custom_wp_admin_script' ) );
+		add_action( 'admin_menu', array( $this, 'sf_sf_survey_form_admin_side' ) );
+		add_action( 'admin_print_styles', array( $this, 'sf_load_custom_sf_admin_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'sf_load_custom_sf_admin_script' ) );
 		add_action( 'admin_post_submit-form', array( $this, 'sf_survey_form_add_record' ) );
 		add_action( 'admin_post_nopriv_submit-form', array( $this, 'sf_survey_form_add_record' ) );
 		add_action( 'wp_ajax_delete_form_data_action', array( $this, 'sf_delete_form_data_action' ) );
@@ -26,7 +26,7 @@ class wp_survey_form_admin {
 	 * Added Pages in Menu for Settings.
 	 *
 	 */
-	public function sf_wp_survey_form_admin_side() {
+	public function sf_sf_survey_form_admin_side() {
 		add_menu_page( 'Add New Survey Form', 'Add New Survey Form', 'administrator', 'add_new_survey_form', array( $this, 'sf_add_new_survey_form' ), 'dashicons-forms' );
 		add_submenu_page( 'add_new_survey_form', 'Display Survey Form', 'Display Survey Form', 'manage_options', 'display_survey_form', array( $this, 'sf_display_survey_form' ) );
 	}
@@ -36,7 +36,7 @@ class wp_survey_form_admin {
 	 *
 	 */
 	public function sf_add_new_survey_form() {
-		require_once( wp_survey_form_path . '/admin/HTML/AddNewSurveyForm.php' );
+		require_once( sf_survey_form_path . '/admin/HTML/AddNewSurveyForm.php' );
 	}
 
 	/**
@@ -44,22 +44,22 @@ class wp_survey_form_admin {
 	 *
 	 */
 	public function sf_display_survey_form() {
-		require_once( wp_survey_form_path . '/admin/HTML/DisplaySurveyForm.php' );
+		require_once( sf_survey_form_path . '/admin/HTML/DisplaySurveyForm.php' );
 	}
 
 	/**
-	 * sf_load_custom_wp_admin_style function for load admin style sheet.
+	 * sf_load_custom_sf_admin_style function for load admin style sheet.
 	 *
 	 */
-	public function sf_load_custom_wp_admin_style() {
+	public function sf_load_custom_sf_admin_style() {
 		wp_enqueue_style( 'admin-css', plugins_url( '/CSS/admin-style.css', __FILE__ ) );
 	}
 
 	/**
-	 * sf_load_custom_wp_admin_script function for load admin JS sheet.
+	 * sf_load_custom_sf_admin_script function for load admin JS sheet.
 	 *
 	 */
-	public function sf_load_custom_wp_admin_script() {
+	public function sf_load_custom_sf_admin_script() {
 		wp_enqueue_script( 'my_custom_script', plugins_url( '/JS/admin-js.js', __FILE__ ) );
 		wp_enqueue_script( 'ajaxHandle' );
 		wp_localize_script( 'ajaxHandle', 'ajax_object', array( 'ajaxurl' => admin_url( 'admin_ajax.php' ) ) );
@@ -127,7 +127,7 @@ class wp_survey_form_admin {
 		$sf_active_status = filter_input( INPUT_POST, 'sf_active_status', FILTER_SANITIZE_STRING );
 
 		if ( ! empty( $sf_shortcode_id ) && ! empty( $sf_active_status ) ) {
-			$wpdb->update( 'wp_survey_form_data', array( "survey_form_enable_disable" => $sf_active_status ), array( 'id' => $sf_shortcode_id ) );
+			$wpdb->update( 'sf_survey_form_data', array( "survey_form_enable_disable" => $sf_active_status ), array( 'id' => $sf_shortcode_id ) );
 		}
 
 		wp_die();
@@ -143,7 +143,7 @@ class wp_survey_form_admin {
 		global $wpdb;
 
 		$closest_option_name = isset( $_POST[ 'closest_option_name' ] ) ? $_POST[ 'closest_option_name' ] : "";
-		$wpdb->delete( 'wp_survey_form_data_count', array( 'form_option_name' => $closest_option_name ) );
+		$wpdb->delete( 'sf_survey_form_data_count', array( 'form_option_name' => $closest_option_name ) );
 
 		$get_cookie = isset( $_COOKIE['survey_form_cookie'] ) ? $_COOKIE['survey_form_cookie'] : "";
 		$jsonData = stripslashes( html_entity_decode( $get_cookie) );

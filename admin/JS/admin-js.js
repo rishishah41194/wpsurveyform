@@ -66,8 +66,6 @@ jQuery( document ).ready( function () {
 			sf_active_status = "Disable";
 		}
 
-		var ajaxurl = "http://wpregisterform.local/wp-admin/admin-ajax.php";
-
 		jQuery.ajax( {
 			url: ajaxurl,
 			type: 'POST',
