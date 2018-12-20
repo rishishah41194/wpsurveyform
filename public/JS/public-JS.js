@@ -12,7 +12,7 @@ jQuery( document ).ready(function() {
 			url: ajax_object.ajaxurl,
 			type: 'POST',
 			data:{
-				action: 'submit_survey_form_ajax_new',
+				action: 'sf_submit_survey_form_ajax',
 				option_value: option_value,
 				hidden_form_id: hidden_form_id,
 				hidden_form_name: hidden_form_name,
