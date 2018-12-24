@@ -20,6 +20,8 @@ class sf_survey_form_admin {
 		add_action( 'wp_ajax_nopriv_delete_form_data_action', array( $this, 'sf_delete_form_data_action' ) );
 		add_action( 'wp_ajax_sf_active_status_ajax_action', array( $this, 'sf_active_status_ajax_action' ) );
 		add_action( 'wp_ajax_sf_closest_option_name_remove', array( $this, 'sf_closest_option_name_remove' ) );
+		add_action( 'wp_ajax_sf_reset_option_count', array( $this, 'sf_reset_option_count' ) );
+		add_action( 'wp_ajax_nopriv_sf_reset_option_count', array( $this, 'sf_reset_option_count' ) );
 	}
 
 	/**
@@ -79,9 +81,10 @@ class sf_survey_form_admin {
 		$id                           = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_STRING );
 		$question_option_remove_blank = array_filter( $question_option );
 		$question_option_string       = implode( ",", $question_option_remove_blank );
+		$sf_table_name = $wpdb->prefix."survey_form_data";
 
 		if ( ! empty( $id ) ) {
-			$wpdb->update( 'wp_survey_form_data', array(
+			$wpdb->update( $sf_table_name, array(
 				'survey_form_name'           => trim( $survey_name ),
 				'survey_form_question'       => trim( $survey_question ),
 				'survey_form_option'         => trim( $question_option_string ),
@@ -89,7 +92,7 @@ class sf_survey_form_admin {
 			), array( 'id' => $id ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form&id=$id" );
 		} else {
-			$wpdb->insert( 'wp_survey_form_data', array(
+			$wpdb->insert( $sf_table_name, array(
 				'survey_form_name'           => trim( $survey_name ),
 				'survey_form_question'       => trim( $survey_question ),
 				'survey_form_option'         => trim( $question_option_string ),
@@ -126,9 +129,10 @@ class sf_survey_form_admin {
 
 		$sf_shortcode_id  = filter_input( INPUT_POST, 'sf_shortcode_id', FILTER_SANITIZE_STRING );
 		$sf_active_status = filter_input( INPUT_POST, 'sf_active_status', FILTER_SANITIZE_STRING );
+		$sf_table_name = $wpdb->prefix."survey_form_data";
 
 		if ( ! empty( $sf_shortcode_id ) && ! empty( $sf_active_status ) ) {
-			$wpdb->update( 'sf_survey_form_data', array( "survey_form_enable_disable" => $sf_active_status ), array( 'id' => $sf_shortcode_id ) );
+			$wpdb->update( $sf_table_name, array( "survey_form_enable_disable" => $sf_active_status ), array( 'id' => $sf_shortcode_id ) );
 		}
 
 		wp_die();
@@ -144,17 +148,31 @@ class sf_survey_form_admin {
 		global $wpdb;
 
 		$closest_option_name = isset( $_POST['closest_option_name'] ) ? $_POST['closest_option_name'] : "";
-		$wpdb->delete( 'sf_survey_form_data_count', array( 'form_option_name' => $closest_option_name ) );
+		$sf_table_name = $wpdb->prefix."survey_form_data_count";
+		$wpdb->delete( $sf_table_name, array( 'form_option_name' => $closest_option_name ) );
 
-		$get_cookie   = isset( $_COOKIE['survey_form_cookie'] ) ? $_COOKIE['survey_form_cookie'] : "";
-		$jsonData     = stripslashes( html_entity_decode( $get_cookie ) );
-		$final_result = json_decode( $jsonData, true );
+		wp_die();
 
-		if ( $final_result[0] === $closest_option_name ) {
-			setcookie( 'survey_form_cookie', "", ( time() + 3600 ), "/" );
+	}
+
+	/**
+	 * sf_reset_option_count function for reset option count.
+	 *
+	 */
+	function sf_reset_option_count() {
+
+		global $wpdb;
+
+		$option_id = isset( $_POST['option_id'] ) ? $_POST['option_id'] : "";
+
+		$sf_table_name = $wpdb->prefix."survey_form_data_count";
+		if ( ! empty( $option_id ) && ! empty( $option_id ) ) {
+			$wpdb->update( $sf_table_name, array( "form_option_count" => "0" ), array( 'form_option_name' => $option_id ) );
 		}
 
 		wp_die();
+
+
 
 	}
 

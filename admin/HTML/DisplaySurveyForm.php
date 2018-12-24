@@ -1,8 +1,9 @@
 <?php
 
 global $wpdb;
-$query               = $wpdb->add_placeholder_escape( "SELECT id, survey_form_name, survey_form_enable_disable FROM wp_survey_form_data", "" );
-$sf_result_shortcode = $wpdb->get_results( $query, ARRAY_A );
+$sf_survey_form_data_table_name = $wpdb->prefix . "survey_form_data";
+$sf_query_forget_result         = $wpdb->add_placeholder_escape( "SELECT id, survey_form_name, survey_form_enable_disable FROM $sf_survey_form_data_table_name", "" );
+$sf_result_shortcode            = $wpdb->get_results( $sf_query_forget_result, ARRAY_A );
 
 if ( ! empty( $sf_result_shortcode ) ) {
 	?>

@@ -12,7 +12,7 @@ table.display_survey_form_table {border: 1px solid;border-collapse: collapse;wid
 .question_option {display: inline-block;}
 table.survey_form_table.form-table td {padding: 0 !important;}
 lable.add_option {background: #008ec2;border-color: #006799;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer; display: inline-block;}
-lable.remove_option {background: #b90505;border-color: #b90505;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer; display: none;}
+lable.remove_option {background: #D24D57;border-color: #D24D57;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;display: none;}
 .newClass .remove_option {display: inline-block;}
 .newClass .add_option {display: none;}
 input.survey_name.error{display: inline-block;}
@@ -43,4 +43,91 @@ label.delete_survey_form.button:hover {background: #ef2100;border: none;box-shad
 .status_table th {vertical-align: top;text-align: left;padding: 20px 10px 20px 0;width: 200px;line-height: 1.3;font-weight: 600;}
 .status_table td {padding: 0 !important;}
 .error { border: 1px solid red !important;color: red !important; }
-.reset_option {background: #4ab905;border-color: #4ab905;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;margin-left: 10px;display: inline-block;}
+/* .reset_option {background: #4ab905;border-color: #4ab905;color: #fff;padding: 5px 20px 8px 20px;border-radius: 10px;cursor: pointer;margin-left: 10px;display: inline-block;} */
+
+/*Reset Buttoon*/
+@import url(https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+/* Global Button Styles */
+a.animated-button:link, a.animated-button:visited {
+	position: relative;
+	display: block;
+	/* margin: 30px auto 0; */
+	padding: 14px 15px;
+	color: #fff;
+	font-size:14px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	overflow: hidden;
+	letter-spacing: .08em;
+	border-radius: 0;
+	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+}
+a.animated-button:link:after, a.animated-button:visited:after {
+	content: "";
+	position: absolute;
+	height: 0%;
+	left: 50%;
+	top: 50%;
+	width: 150%;
+	z-index: -1;
+	-webkit-transition: all 0.75s ease 0s;
+	-moz-transition: all 0.75s ease 0s;
+	-o-transition: all 0.75s ease 0s;
+	transition: all 0.75s ease 0s;
+}
+a.animated-button:link:hover, a.animated-button:visited:hover {
+	color: #FFF;
+	text-shadow: none;
+}
+a.animated-button:link:hover:after, a.animated-button:visited:hover:after {
+	height: 450%;
+}
+a.animated-button:link, a.animated-button:visited {
+	position: relative;
+	display: inline-block;
+	/* margin: 30px auto 0; */
+	padding: 14px 15px;
+	color: #040303;
+	font-size: 14px;
+	border-radius: 37px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	overflow: hidden;
+	letter-spacing: .08em;
+	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+	line-height: 0;
+}
+
+/* Victoria Buttons */
+
+a.animated-button.victoria-one {
+	border: 2px solid #D24D57;
+	min-width: 50px;
+}
+a.animated-button.victoria-one:after {
+	background: #D24D57;
+	-moz-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+	-ms-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+	-webkit-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+	transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+}
+.col-md-3.col-sm-3.col-xs-6 {
+    display: inline-flex;
+}
+.sf_operation_buttons {
+    display: inline-block;
+}

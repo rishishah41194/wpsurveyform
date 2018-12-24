@@ -1,7 +1,8 @@
 <?php
 global $wpdb;
 $sf_form_id              = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
-$sf_result_form          = $wpdb->get_results( "SELECT * FROM `wp_survey_form_data` WHERE `id` = '$sf_form_id'", ARRAY_A );
+$sf_table_name_survey_form_data = $wpdb->prefix."survey_form_data";
+$sf_result_form          = $wpdb->get_results( "SELECT * FROM `$sf_table_name_survey_form_data` WHERE `id` = '$sf_form_id'", ARRAY_A );
 $sf_survey_option_string = $sf_result_form[0]['survey_form_option'];
 $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 
@@ -54,9 +55,25 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 										echo "newClass";
 									} ?>">
 										<input type="text" name="question_option[]" placeholder="Enter your survey option" class="survey_name option_class" id="1" value="<?php echo $sf_survey_option_array_result; ?>" required>
-										<lable class="add_option"><span class="dashicons dashicons-plus"></span></lable>
-										<lable class="remove_option">
-											<span class="dashicons dashicons-trash" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>"></span></lable>
+										<div class="sf_operation_buttons">
+											<lable class="add_option">
+												<span class="dashicons dashicons-plus"></span>
+											</lable>
+											<lable class="remove_option">
+												<span class="dashicons dashicons-trash" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>"></span>
+											</lable>
+											<?php
+
+											$option_name_count = "surveyformid_{$sf_form_id}_{$sf_survey_option_array_result}";
+
+											$sf_table_name_survey_form_data_count = $wpdb->prefix."survey_form_data_count";
+											$count_value_array          = $wpdb->get_results( "SELECT `form_option_count` FROM `$sf_table_name_survey_form_data_count` WHERE `form_option_name` = '$option_name_count'", ARRAY_A );
+											?>
+											<div class="col-md-3 col-sm-3 col-xs-6">
+												<a href="javascript:void(0)" class="btn btn-sm animated-button victoria-one" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>">Reset</a>
+												<input type="hidden" class="reset_count_value" value="<?php echo $count_value_array[0]['form_option_count']; ?>">
+											</div>
+										</div>
 									</td>
 									<?php
 									$count ++;

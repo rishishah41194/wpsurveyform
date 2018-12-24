@@ -138,8 +138,37 @@ jQuery( document ).ready( function () {
 		}
 	});
 
-	jQuery( '.reset_option' ).hover( function () {
-		
+	jQuery(".victoria-one").mouseenter(function() {
+		var value = jQuery(this).siblings('.reset_count_value').attr("value");
+		if( "" === value ){
+			value = "0";
+		}
+		jQuery(this).text( value );
+	}).mouseleave(function() {
+		jQuery(this).text( "Reset" );
 	});
+
+	jQuery( document ).on( "click", ".victoria-one", function () {
+		
+		if (confirm("Are you sure?")) {
+			var option_id = jQuery(this).attr("id");
+			jQuery.ajax( {
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'sf_reset_option_count',
+					option_id: option_id,
+				},
+				success: function ( data ) {
+					window.location.reload();
+				}
+	
+			} );
+
+
+		}
+		return false;
+		
+	} );
 
 } );
