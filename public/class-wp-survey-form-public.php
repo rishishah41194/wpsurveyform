@@ -79,7 +79,7 @@ class sf_survey_form_public {
 
 			$sf_table_name       = $wpdb->prefix . "survey_form_data";
 
-			$result_front = $wpdb->get_results( "SELECT * FROM  $sf_table_name WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+			$result_front = $wpdb->get_results( "SELECT `survey_form_option` FROM  $sf_table_name WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
 			echo "<pre>";
 			print_r( $result_front );
