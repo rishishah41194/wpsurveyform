@@ -42,7 +42,7 @@ class sf_survey_form_admin {
 	}
 
 	/**
-	 * sf_display_survey_form function for call Diplay Survey Form template.
+	 * sf_display_survey_form function for call Display Survey Form template.
 	 *
 	 */
 	public function sf_display_survey_form() {
@@ -81,7 +81,7 @@ class sf_survey_form_admin {
 		$id                           = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_STRING );
 		$question_option_remove_blank = array_filter( $question_option );
 		$question_option_string       = implode( ",", $question_option_remove_blank );
-		$sf_table_name = $wpdb->prefix."survey_form_data";
+		$sf_table_name                = $wpdb->prefix . "survey_form_data";
 
 		if ( ! empty( $id ) ) {
 			$wpdb->update( $sf_table_name, array(
@@ -129,7 +129,7 @@ class sf_survey_form_admin {
 
 		$sf_shortcode_id  = filter_input( INPUT_POST, 'sf_shortcode_id', FILTER_SANITIZE_STRING );
 		$sf_active_status = filter_input( INPUT_POST, 'sf_active_status', FILTER_SANITIZE_STRING );
-		$sf_table_name = $wpdb->prefix."survey_form_data";
+		$sf_table_name    = $wpdb->prefix . "survey_form_data";
 
 		if ( ! empty( $sf_shortcode_id ) && ! empty( $sf_active_status ) ) {
 			$wpdb->update( $sf_table_name, array( "survey_form_enable_disable" => $sf_active_status ), array( 'id' => $sf_shortcode_id ) );
@@ -148,7 +148,7 @@ class sf_survey_form_admin {
 		global $wpdb;
 
 		$closest_option_name = isset( $_POST['closest_option_name'] ) ? $_POST['closest_option_name'] : "";
-		$sf_table_name = $wpdb->prefix."survey_form_data_count";
+		$sf_table_name       = $wpdb->prefix . "survey_form_data_count";
 		$wpdb->delete( $sf_table_name, array( 'form_option_name' => $closest_option_name ) );
 
 		wp_die();
@@ -162,18 +162,12 @@ class sf_survey_form_admin {
 	function sf_reset_option_count() {
 
 		global $wpdb;
-
 		$option_id = isset( $_POST['option_id'] ) ? $_POST['option_id'] : "";
-
-		$sf_table_name = $wpdb->prefix."survey_form_data_count";
+		$sf_table_name = $wpdb->prefix . "survey_form_data_count";
 		if ( ! empty( $option_id ) && ! empty( $option_id ) ) {
 			$wpdb->update( $sf_table_name, array( "form_option_count" => "0" ), array( 'form_option_name' => $option_id ) );
 		}
-
 		wp_die();
-
-
-
 	}
 
 }

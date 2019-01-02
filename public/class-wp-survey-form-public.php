@@ -48,7 +48,8 @@ class sf_survey_form_public {
 		$final_result = json_decode( $jsonData, true );
 
 		if ( ! isset ( $final_result ) && empty( $final_result ) ) {
-			$result_front = $wpdb->get_results( "SELECT * FROM wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+			$sf_table_name       = $wpdb->prefix . "survey_form_data";
+			$result_front = $wpdb->get_results( "SELECT * FROM $sf_table_name WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 			$option_array = explode( ",", $result_front[0]['survey_form_option'] );
 			$count        = 1;
 			if ( isset( $result_front ) && ! empty( $result_front ) && $result_front[0]['survey_form_enable_disable'] === "Enable" ) {

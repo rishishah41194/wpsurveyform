@@ -5,7 +5,7 @@ Description: Just another survey form plugin. Simple but flexible.
 Author: Rishi Shah
 Author URI: http://rishirshah.com
 Text Domain: wp-survey-form
-Version: 1.0.1
+Version: 1.0
 */
 
 /**
@@ -35,7 +35,7 @@ function sf_create_db() {
 	$charset_collate = $wpdb->get_charset_collate();
 	$table_name_one  = $wpdb->prefix . 'survey_form_data';
 
-	$sql = "CREATE TABLE $table_name_one (
+	$sql_survey_form_data = "CREATE TABLE $table_name_one (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		survey_form_enable_disable varchar(255) NULL,
 		survey_form_name varchar(255) NULL,
@@ -46,10 +46,10 @@ function sf_create_db() {
 	) $charset_collate;";
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	dbDelta( $sql );
+	dbDelta( $sql_survey_form_data );
 
 	$table_name = $wpdb->prefix . 'survey_form_data_count';;
-	$sql = "CREATE TABLE $table_name (
+	$sql_survey_form_data_count = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		survey_form_id mediumint(9) NOT NULL,
 		form_option_id varchar(255) NULL,
@@ -61,7 +61,7 @@ function sf_create_db() {
 	  ) $charset_collate;";
 	  
 	  require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	  dbDelta( $sql );
+	  dbDelta( $sql_survey_form_data_count );
 
 }
 
