@@ -3,7 +3,7 @@ Contributors: rishishah, janak007, viralsampat, hardipparmar
 Tags: Survey Form Generator, Survey Form, Take Survey
 Donate link: http://rishirshah.com/
 Requires at least: 4.0
-Tested up to: 5.0.2
+Tested up to: 4.9.9
 Requires PHP: 5.6
 Stable tag: 1.0
 License: GPLv2 or later
@@ -23,5 +23,5 @@ Some examples to Surveys:
 
 == Installation ==
 1. Activated the plugin.
-2. Create Survey Form from the \"add_new_survey_form\" admin page.
-3. Copy the shortcode from \"display_survey_form\" admin page and past it on anywhere in the site.
+2. Create Survey Form from the "add_new_survey_form" admin page.
+3. Copy the shortcode from "display_survey_form" admin page and past it on anywhere in the site.

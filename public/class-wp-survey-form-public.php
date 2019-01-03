@@ -147,7 +147,7 @@ class sf_survey_form_public {
 		}
 
 		$content = ob_get_contents();
-		ob_clean(); 
+		ob_clean();
 
 		/**
 		 * Update Servery Form HTML Content.
@@ -183,7 +183,7 @@ class sf_survey_form_public {
 			$increse_count = $options_of_current_form[0]['form_option_count'];
 			$increse_count ++;
 
-			$wpdb->update( 'wp_survey_form_data_count', array(
+			$wpdb->update( $table_name_survey_form_data_count, array(
 				'survey_form_id'    => $hidden_form_id,
 				'form_option_id'    => $hidden_form_id,
 				'form_option_name'  => $sf_option_key,
@@ -191,7 +191,7 @@ class sf_survey_form_public {
 			), array( 'form_option_name' => $sf_option_key ) );
 
 		} else {
-			$wpdb->insert( 'wp_survey_form_data_count', array(
+			$wpdb->insert( $table_name_survey_form_data_count, array(
 				'survey_form_id'    => $hidden_form_id,
 				'form_option_id'    => $hidden_form_id,
 				'form_option_name'  => $sf_option_key,
