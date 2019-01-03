@@ -147,7 +147,7 @@ class sf_survey_form_public {
 		}
 
 		$content = ob_get_contents();
-		ob_clean();
+		ob_clean(); 
 
 		/**
 		 * Update Servery Form HTML Content.
