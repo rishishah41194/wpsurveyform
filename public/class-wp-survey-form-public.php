@@ -175,7 +175,8 @@ class sf_survey_form_public {
 
 		array_push( $survey_form_array, $sf_option_key, $hidden_form_id );
 
-		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM wp_survey_form_data_count WHERE `form_option_name` = '$sf_option_key' ", ARRAY_A );
+		$table_name_survey_form_data_count = $wpdb->prefix . "survey_form_data_count";
+		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM $table_name_survey_form_data_count WHERE `form_option_name` = '$sf_option_key' ", ARRAY_A );
 
 		if ( isset( $options_of_current_form ) && ! empty( $options_of_current_form ) ) {
 
