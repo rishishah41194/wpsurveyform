@@ -77,67 +77,72 @@ class sf_survey_form_public {
 			}
 		} else {
 
-			$sf_table_name       = $wpdb->prefix . "survey_form_data";
+			$sf_table_name_survey_form_data       = $wpdb->prefix . "survey_form_data";
+			$sf_table_name_survey_form_data_count       = $wpdb->prefix . "survey_form_data_count";
+			$result_front = $wpdb->get_results( "SELECT * FROM  $sf_table_name_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
 
-			$result_front = $wpdb->get_results( "SELECT `survey_form_option` FROM  $sf_table_name WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+			if( isset( $result_front ) && !empty( $result_front ) ) {
+				?>
+				<div class="main_user_block_section" id="disabled">
+					<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
+					<?php
+					$sf_options_string = $result_front[0]['survey_form_option'];
+					$sf_options_array = explode( ",", $sf_options_string );
+					$total_count_vote    = "";
+					foreach ( $sf_options_array as $result_front_result ) {
+						$sf_option_key = "surveyformid_".$form_id."_".$result_front_result;
+						$result_from_coockie = $wpdb->get_results( "SELECT `form_option_count` FROM $sf_table_name_survey_form_data_count WHERE `form_option_name` = '$sf_option_key'", ARRAY_A );
+						$total_count_vote +=  $result_from_coockie[0]['form_option_count'];
+					}
 
-			echo "<pre>";
-			print_r( $result_front );
-			echo "</pre>";
+					$COOKIE_option_value = explode( "_", $final_result[0] );
+					$count = 0;
+					foreach ( $sf_options_array as $result_front_result ) {
+						$sf_option_key = "surveyformid_".$form_id."_".$result_front_result;
+						$result_from_coockie = $wpdb->get_results( "SELECT `form_option_count` FROM $sf_table_name_survey_form_data_count WHERE `form_option_name` = '$sf_option_key'", ARRAY_A );
+						if( isset( $result_from_coockie[0]['form_option_count'] ) && !empty( $result_from_coockie[0]['form_option_count'] ) ) {
+							$single_option_count = round( $result_from_coockie[0]['form_option_count'] * 100 / $total_count_vote );
+							?>
+							<div class="wrapper">
+								<label class=""><input type="radio" name="survey_option" value="<?php echo $result_front_result[2]; ?>" <?php if ( $COOKIE_option_value[2] === $result_front_result ) {
+										echo "checked";
+									} ?>><?php echo $result_front_result; ?></label>
+								<input type="hidden" class="<?php echo $result_front_result; ?>" value="">
+								<div class="prg_bar" id="<?php  ?>">
+									<div id="progress_bar" class="<?php echo $result_front_result ?>" style="width:<?php echo $single_option_count . "%"; ?>; background:#05f50f;display: block;height: 30px;border-radius: 50px;"><?php echo isset( $single_option_count ) ? $single_option_count . "%" : "0%"; ?></div>
+								</div>
+								<?php
+								$count ++;
+								?>
+							</div>
+							<?php
+						} else {
+							?>
+							<div class="wrapper">
+								<label class=""><input type="radio" name="survey_option" value="<?php echo $result_front_result[2]; ?>" <?php if ( $COOKIE_option_value[2] === $result_front_result ) {
+										echo "checked";
+									} ?>><?php echo $result_front_result; ?></label>
+								<input type="hidden" class="<?php echo $result_front_result; ?>" value="">
+								<div class="prg_bar" id="<?php  ?>">
+									<div id="progress_bar" class="<?php echo $result_front_result ?>" style="width: 0px; background:#05f50f;display: block;height: 30px;border-radius: 50px;">0%</div>
+								</div>
+								<?php
+								$count ++;
+								?>
+							</div>
+							<?php
+						}
+						?>
+						<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
+						<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
+						<?php
+					}
 
+					?>
+				</div>
+				<?php
 
-			// $result_front = $wpdb->get_results( "SELECT * FROM  wp_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
-			// if ( ! empty( $result_front ) && isset( $result_front ) ) {
-			// 	foreach ( $result_front as $result_front_data ) {
-			// 		$id                  = $result_front_data['id'];
-			// 		$result_from_coockie = $wpdb->get_results( "SELECT * FROM wp_survey_form_data_count WHERE `survey_form_id` = '$id'", ARRAY_A );
-			// 		$total_count_vote    = "";
-			// 		$single_option_count = array();
-			//
-			// 		foreach ( $result_from_coockie as $result_from_coockie_value ) {
-			// 			$total_count_vote += $result_from_coockie_value['form_option_count'];
-			// 		}
-			//
-			// 		foreach ( $result_from_coockie as $result_from_coockie_value ) {
-			// 			$single_option_count[] = round( $result_from_coockie_value['form_option_count'] * 100 / $total_count_vote );
-			// 		}
-			//
-			// 		$COOKIE_option_value = explode( "_", $final_result[0] );
-			// 		$count               = 1;
-			// 		$percentage_count    = 0;
-			// 		if ( isset( $result_from_coockie ) && ! empty( $result_from_coockie ) && $result_front_data['survey_form_enable_disable'] === "Enable" ) {
-			// 			?>
-			<!--			<div class="main_user_block_section" id="disabled">-->
-			<!--				<label class="">--><?php //esc_html_e( $result_front_data['survey_form_name'], 'wp-survey-form' ); ?><!--</label>-->
-			<!--				--><?php
-			// 				foreach ( $result_from_coockie as $result_from_coockie_data ) {
-			// 					$option_name = explode( "_", $result_from_coockie_data['form_option_name'] );
-			// 					?>
-			<!--					<div class="wrapper">-->
-			<!--						<label class=""><input type="radio" name="survey_option" value="--><?php //echo $option_name[2]; ?><!--" --><?php //if ( $COOKIE_option_value[2] === $option_name[2] ) {
-			// 								echo "checked";
-			// 							} ?><!-->--><?php //echo $option_name[2]; ?><!--</label>-->
-			<!--						<input type="hidden" class="--><?php //echo $result_from_coockie_data['form_option_name']; ?><!--" value="">-->
-			<!--						<div class="prg_bar" id="--><?php //echo $single_option_count[ $percentage_count ]; ?><!--">-->
-			<!--							<div id="progress_bar" class="--><?php //echo $result_from_coockie_data['form_option_name']; ?><!--" style="width:--><?php //echo $single_option_count[ $percentage_count ] . "%"; ?>/*; background:#05f50f;display: block;height: 30px;border-radius: 50px;">*/<?php //echo isset( $single_option_count[ $percentage_count ] ) ? $single_option_count[ $percentage_count ] . "%" : "0%"; ?><!--</div>-->
-			<!--						</div>-->
-			<!--						--><?php
-			// 						$count ++;
-			// 						$percentage_count ++;
-			// 						?>
-			<!--					</div>-->
-			<!--					<input type="hidden" name="hidden_id" class="hidden_form_id" value="--><?php //echo $form_id; ?><!--">-->
-			<!--					<input type="hidden" name="hidden_name" class="hidden_form_name" value="--><?php //echo $form_name; ?><!--">-->
-			<!--					--><?php
-			// 				}
-			// 				?>
-			<!--			</div>-->
-			<!--			--><?php
-			// 		}
-			//
-			// 	}
-			//
-			// }
+			}
 
 		}
 
@@ -145,7 +150,7 @@ class sf_survey_form_public {
 		ob_clean();
 
 		/**
-		 * Update Survery Form HTML Content.
+		 * Update Servery Form HTML Content.
 		 *
 		 * @since 1.0.0
 		 *
