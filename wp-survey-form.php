@@ -22,14 +22,14 @@ if ( ! defined( 'sf_register_form_path' ) ) {
  * Plugin Activation hook for create DB tables.
  *
  */
-register_activation_hook( __FILE__, 'sf_create_db' );
+register_activation_hook( __FILE__, 'sf_survey_form_create_db' );
 
 /**
  *
  * Plugin Activation function for create DB tables.
  *
  */
-function sf_create_db() {
+function sf_survey_form_create_db() {
 
 	global $wpdb;
 	$charset_collate = $wpdb->get_charset_collate();

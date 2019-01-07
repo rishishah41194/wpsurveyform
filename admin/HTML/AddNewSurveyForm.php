@@ -1,9 +1,17 @@
 <?php
 global $wpdb;
+
+// Get form id from the request URL.
 $sf_form_id              = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+
+// Get result from the database of particular ID.
 $sf_table_name_survey_form_data = $wpdb->prefix."survey_form_data";
-$sf_result_form          = $wpdb->get_results( "SELECT * FROM `$sf_table_name_survey_form_data` WHERE `id` = '$sf_form_id'", ARRAY_A );
+$sf_result_form          = $wpdb->get_results( $wpdb->prepare("SELECT * FROM `$sf_table_name_survey_form_data` WHERE `id` = '%d'", array( $sf_form_id ) ), ARRAY_A  );
+
+// Get all options from the query,
 $sf_survey_option_string = $sf_result_form[0]['survey_form_option'];
+
+// Convert options string to array.
 $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 
 ?>
@@ -13,7 +21,7 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 			<h1><?php esc_html_e( 'Add New Survey Form', 'wp-survey-form' ); ?></h1>
 			<div class="form">
 				<form action='<?php echo get_admin_url(); ?>admin-post.php' method="post" name="survey_form" id="add_new_survey_form" class="repeater">
-					<div class="active_deactive_buttons">
+					<div class="active_deactivate_buttons">
 						<table class="status_table">
 							<tr>
 								<th><?php esc_html_e( "Enable / Disable The Form:", 'wp-survey-form' ) ?></th>
@@ -63,11 +71,12 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 												<span class="dashicons dashicons-trash" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>"></span>
 											</lable>
 											<?php
-
+											// Option name for get count of it.
 											$option_name_count = "surveyformid_{$sf_form_id}_{$sf_survey_option_array_result}";
 
+											// Get count value of the particular option.
 											$sf_table_name_survey_form_data_count = $wpdb->prefix."survey_form_data_count";
-											$count_value_array          = $wpdb->get_results( "SELECT `form_option_count` FROM `$sf_table_name_survey_form_data_count` WHERE `form_option_name` = '$option_name_count'", ARRAY_A );
+											$count_value_array          = $wpdb->get_results( $wpdb->prepare("SELECT `form_option_count` FROM `$sf_table_name_survey_form_data_count` WHERE `form_option_name` = '%s'" , array( $option_name_count ) ), ARRAY_A );
 											?>
 											<div class="col-md-3 col-sm-3 col-xs-6">
 												<a href="javascript:void(0)" class="btn btn-sm animated-button victoria-one" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>">Reset</a>

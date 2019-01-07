@@ -27,7 +27,7 @@ input.survey_name.error{display: inline-block;}
 input:checked + .slider {background-color: #2196F3;}
 input:focus + .slider {box-shadow: 0 0 1px #2196F3;}
 input:checked + .slider:before {-webkit-transform: translateX(26px);-ms-transform: translateX(26px);transform: translateX(26px);}
-.active_deactive_buttons {margin: 25px 0px 25px 0px;}
+.active_deactivate_buttons {margin: 25px 0px 25px 0px;}
 .disable_class {display: none;}
 label.edit_survey_form.button {padding: 0px;background: #00a228;border-radius: 10px;border: 0; box-shadow: none;margin-right: 10px;}
 label.delete_survey_form.button {padding: 2px 10px 10px 10px;background: #ef2100;border-radius: 10px;border: 0; box-shadow: none;}
@@ -51,84 +51,16 @@ label.delete_survey_form.button:hover {background: #ef2100;border: none;box-shad
 @import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
 
 /* Global Button Styles */
-a.animated-button:link, a.animated-button:visited {
-	position: relative;
-	display: block;
-	/* margin: 30px auto 0; */
-	padding: 14px 15px;
-	color: #fff;
-	font-size:14px;
-	font-weight: bold;
-	text-align: center;
-	text-decoration: none;
-	text-transform: uppercase;
-	overflow: hidden;
-	letter-spacing: .08em;
-	border-radius: 0;
-	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
-	-webkit-transition: all 1s ease;
-	-moz-transition: all 1s ease;
-	-o-transition: all 1s ease;
-	transition: all 1s ease;
-}
-a.animated-button:link:after, a.animated-button:visited:after {
-	content: "";
-	position: absolute;
-	height: 0%;
-	left: 50%;
-	top: 50%;
-	width: 150%;
-	z-index: -1;
-	-webkit-transition: all 0.75s ease 0s;
-	-moz-transition: all 0.75s ease 0s;
-	-o-transition: all 0.75s ease 0s;
-	transition: all 0.75s ease 0s;
-}
-a.animated-button:link:hover, a.animated-button:visited:hover {
-	color: #FFF;
-	text-shadow: none;
-}
-a.animated-button:link:hover:after, a.animated-button:visited:hover:after {
-	height: 450%;
-}
-a.animated-button:link, a.animated-button:visited {
-	position: relative;
-	display: inline-block;
-	/* margin: 30px auto 0; */
-	padding: 14px 15px;
-	color: #040303;
-	font-size: 14px;
-	border-radius: 37px;
-	font-weight: bold;
-	text-align: center;
-	text-decoration: none;
-	text-transform: uppercase;
-	overflow: hidden;
-	letter-spacing: .08em;
-	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
-	-webkit-transition: all 1s ease;
-	-moz-transition: all 1s ease;
-	-o-transition: all 1s ease;
-	transition: all 1s ease;
-	line-height: 0;
-}
-
+a.animated-button:link, a.animated-button:visited {position: relative;display: block; /* margin: 30px auto 0; */padding: 14px 15px;color: #fff;font-size:14px;font-weight: bold;text-align: center;text-decoration: none;text-transform: uppercase;overflow: hidden;letter-spacing: .08em;border-radius: 0;text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);-webkit-transition: all 1s ease;-moz-transition: all 1s ease;-o-transition: all 1s ease;transition: all 1s ease;}
+a.animated-button:link:after, a.animated-button:visited:after {content: "";position: absolute;height: 0%;left: 50%;top: 50%;width: 150%;z-index: -1;-webkit-transition: all 0.75s ease 0s;-moz-transition: all 0.75s ease 0s;-o-transition: all 0.75s ease 0s;transition: all 0.75s ease 0s;}
+a.animated-button:link:hover, a.animated-button:visited:hover {color: #FFF;text-shadow: none;}
+a.animated-button:link:hover:after, a.animated-button:visited:hover:after {height: 450%;}
+a.animated-button:link, a.animated-button:visited {position: relative;display: inline-block; /* margin: 30px auto 0; */padding: 14px 15px;color: #040303;font-size: 14px;border-radius: 37px;font-weight: bold;text-align: center;text-decoration: none;text-transform: uppercase;overflow: hidden;letter-spacing: .08em;text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);-webkit-transition: all 1s ease;-moz-transition: all 1s ease;-o-transition: all 1s ease;transition: all 1s ease;line-height: 0;}
 /* Victoria Buttons */
-
-a.animated-button.victoria-one {
-	border: 2px solid #D24D57;
-	min-width: 50px;
-}
-a.animated-button.victoria-one:after {
-	background: #D24D57;
-	-moz-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
-	-ms-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
-	-webkit-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
-	transform: translateX(-50%) translateY(-50%) rotate(-25deg);
-}
-.col-md-3.col-sm-3.col-xs-6 {
-    display: inline-flex;
-}
-.sf_operation_buttons {
-    display: inline-block;
-}
+a.animated-button.victoria-one {border: 2px solid #D24D57;min-width: 50px;}
+a.animated-button.victoria-one:after {background: #D24D57;-moz-transform: translateX(-50%) translateY(-50%) rotate(-25deg);-ms-transform: translateX(-50%) translateY(-50%) rotate(-25deg);-webkit-transform: translateX(-50%) translateY(-50%) rotate(-25deg);transform: translateX(-50%) translateY(-50%) rotate(-25deg);}
+.col-md-3.col-sm-3.col-xs-6 {display: inline-flex;}
+.sf_operation_buttons {display: inline-block;}
+.display_survey_form_section .header-message {padding: 23px;font-size: 14px;border: 2px solid #e61616;}
+.display_survey_form_section .header-message span {font-weight: 600;}
+.display_survey_form_section .header-message span a {text-decoration: underline;cursor: pointer;}

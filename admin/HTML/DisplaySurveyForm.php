@@ -1,11 +1,14 @@
 <?php
 
+// Declaring the global variable.
 global $wpdb;
-$sf_survey_form_data_table_name = $wpdb->prefix . "survey_form_data";
-$sf_query_forget_result         = $wpdb->add_placeholder_escape( "SELECT id, survey_form_name, survey_form_enable_disable FROM $sf_survey_form_data_table_name", "" );
-$sf_result_shortcode            = $wpdb->get_results( $sf_query_forget_result, ARRAY_A );
 
-if ( ! empty( $sf_result_shortcode ) ) {
+// Get result of all forms from the Database.
+$sf_survey_form_data_table_name = $wpdb->prefix . "survey_form_data";
+$sf_query_forget_result         = $wpdb->get_results( $wpdb->prepare( "SELECT id, survey_form_name, survey_form_enable_disable FROM $sf_survey_form_data_table_name", '' ), ARRAY_A );
+
+// Check if there are any forms are available or not into the database.
+if ( ! empty( $sf_query_forget_result ) ) {
 	?>
 	<div class="display_survey_form_section">
 
@@ -16,7 +19,7 @@ if ( ! empty( $sf_result_shortcode ) ) {
 		 * @since 1.0.0
 		 * @param array $sf_result_shortcode
 		 */
-		do_action( 'sf_before_display_survey_form_table', $sf_result_shortcode );
+		do_action( 'sf_before_display_survey_form_table', $sf_query_forget_result );
 		?>
 		<table class="display_survey_form_table">
 			<thead>
@@ -29,7 +32,7 @@ if ( ! empty( $sf_result_shortcode ) ) {
 			</thead>
 			<tbody>
 			<?php
-			foreach ( $sf_result_shortcode as $sf_result_shortcode_value ) {
+			foreach ( $sf_query_forget_result as $sf_result_shortcode_value ) {
 				?>
 				<tr>
 					<td>
@@ -74,4 +77,12 @@ if ( ! empty( $sf_result_shortcode ) ) {
 	</div>
 	<?php
 
+} else {
+	?>
+	<div class="display_survey_form_section">
+		<div class="header-message">
+			<span>"You have to create survey form first. <a href="/wp-admin/admin.php?page=add_new_survey_form">Click Here!</a></span>
+		</div>
+	</div>
+	<?php
 }
