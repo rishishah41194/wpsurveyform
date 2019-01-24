@@ -75,29 +75,35 @@ class sf_survey_form_admin {
 		global $wpdb;
 
 		// Get all the values from the Add form.
-		$survey_name                  = filter_input( INPUT_POST, 'survey_name', FILTER_SANITIZE_STRING );
-		$survey_question              = filter_input( INPUT_POST, 'survey_question', FILTER_SANITIZE_STRING );
-		$survey_form_enable_disable   = filter_input( INPUT_POST, 'enable/disable', FILTER_SANITIZE_STRING );
-		$survey_form_id                           = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_STRING );
+		$survey_name                = filter_input( INPUT_POST, 'survey_name', FILTER_SANITIZE_STRING );
+		$survey_question            = filter_input( INPUT_POST, 'survey_question', FILTER_SANITIZE_STRING );
+		$survey_form_enable_disable = filter_input( INPUT_POST, 'enable/disable', FILTER_SANITIZE_STRING );
+		$survey_form_id             = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_STRING );
 
 		// For sanitize all the options.
-		$question_option              = isset( $_POST['question_option'] ) ? $_POST['question_option'] : "";
-		$question_option_remove_blank = array_filter( $question_option );
-		$question_option_string       = implode( ",", $question_option_remove_blank );
+		$question_option                  = isset( $_POST['question_option'] ) ? $_POST['question_option'] : "";
+		$question_option_remove_blank     = array_filter( $question_option );
+		$question_option_string           = implode( ",", $question_option_remove_blank );
 		$question_option_string_sanitized = strip_tags( $question_option_string, 'wp-survey-form' );
 
 		// Add/Update records to the database.
-		$sf_table_name                = $wpdb->prefix . "survey_form_data";
+		$sf_table_name = $wpdb->prefix . "survey_form_data";
 		if ( ! empty( $survey_form_id ) ) {
-			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET survey_form_name = %s, survey_form_question = %s, survey_form_option = %s, survey_form_enable_disable = %s WHERE id = %d ",
-					array( $survey_name, $survey_question, $question_option_string_sanitized, $survey_form_enable_disable, $survey_form_id )
-				)
-			);
+			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET survey_form_name = %s, survey_form_question = %s, survey_form_option = %s, survey_form_enable_disable = %s WHERE id = %d ", array(
+					$survey_name,
+					$survey_question,
+					$question_option_string_sanitized,
+					$survey_form_enable_disable,
+					$survey_form_id,
+				) ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form&id=$survey_form_id" );
 		} else {
-			$wpdb->query( $wpdb->prepare( "INSERT INTO $sf_table_name ( survey_form_name, survey_form_question, survey_form_option, survey_form_enable_disable ) VALUES ( %s, %s, %s, %s ) ",
-				array( $survey_name, $survey_question, $question_option_string_sanitized, $survey_form_enable_disable ) )
-			);
+			$wpdb->query( $wpdb->prepare( "INSERT INTO $sf_table_name ( survey_form_name, survey_form_question, survey_form_option, survey_form_enable_disable ) VALUES ( %s, %s, %s, %s ) ", array(
+					$survey_name,
+					$survey_question,
+					$question_option_string_sanitized,
+					$survey_form_enable_disable,
+				) ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=display_survey_form" );
 		}
 	}
@@ -110,11 +116,11 @@ class sf_survey_form_admin {
 		global $wpdb;
 
 		$survey_form_id = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_STRING );
-		$sf_table_name                = $wpdb->prefix . "survey_form_data";
+		$sf_table_name  = $wpdb->prefix . "survey_form_data";
 
 		//  Delete whole data of form.
 		if ( ! empty( $survey_form_id ) ) {
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $sf_table_name WHERE id = %d", array( $survey_form_id )) );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $sf_table_name WHERE id = %d", array( $survey_form_id ) ) );
 		}
 		wp_die();
 	}
@@ -133,7 +139,7 @@ class sf_survey_form_admin {
 
 		// Change Active status of particular form.
 		if ( ! empty( $sf_shortcode_id ) && ! empty( $sf_active_status ) ) {
-			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET survey_form_enable_disable = %s WHERE id = %d ",  array( $sf_active_status, $sf_shortcode_id ) ) );
+			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET survey_form_enable_disable = %s WHERE id = %d ", array( $sf_active_status, $sf_shortcode_id ) ) );
 		}
 
 		wp_die();
@@ -148,11 +154,11 @@ class sf_survey_form_admin {
 
 		global $wpdb;
 
-		$closest_option_name  = filter_input( INPUT_POST, 'closest_option_name', FILTER_SANITIZE_STRING );
+		$closest_option_name = filter_input( INPUT_POST, 'closest_option_name', FILTER_SANITIZE_STRING );
 		$sf_table_name       = $wpdb->prefix . "survey_form_data_count";
 
 		// Remove any option from survey form.
-		$wpdb->query( $wpdb->prepare( "DELETE FROM $sf_table_name WHERE form_option_name = %s", array( $closest_option_name )) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM $sf_table_name WHERE form_option_name = %s", array( $closest_option_name ) ) );
 		wp_die();
 
 	}
@@ -165,12 +171,12 @@ class sf_survey_form_admin {
 
 		global $wpdb;
 
-		$option_id  = filter_input( INPUT_POST, 'option_id', FILTER_SANITIZE_STRING );
+		$option_id     = filter_input( INPUT_POST, 'option_id', FILTER_SANITIZE_STRING );
 		$sf_table_name = $wpdb->prefix . "survey_form_data_count";
 
 		// Reset option count of particular option click.
 		if ( ! empty( $option_id ) && ! empty( $option_id ) ) {
-			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET form_option_count = %d WHERE form_option_name = %s ",  array( "0", $option_id ) ) );
+			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET form_option_count = %d WHERE form_option_name = %s ", array( "0", $option_id ) ) );
 		}
 
 		wp_die();

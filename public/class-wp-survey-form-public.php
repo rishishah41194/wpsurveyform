@@ -49,29 +49,28 @@ class sf_survey_form_public {
 
 		if ( ! isset ( $final_result ) && empty( $final_result ) ) {
 			$sf_table_name       = $wpdb->prefix . "survey_form_data";
-			$result_front = $wpdb->get_results( "SELECT * FROM $sf_table_name WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+			$result_front = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $sf_table_name WHERE `id` = %d AND `survey_form_name` = %s", array( $form_id, $form_name ) ), ARRAY_A );
 			$option_array = explode( ",", $result_front[0]['survey_form_option'] );
 			$count        = 1;
-			if ( isset( $result_front ) && ! empty( $result_front ) && $result_front[0]['survey_form_enable_disable'] === "Enable" ) {
+			if ( isset( $result_front ) && ! empty( $result_front ) && "Enable" === $result_front[0]['survey_form_enable_disable'] ) {
 				?>
 				<div class="main_user_block_section">
 					<div class="wrapper">
 						<label class=""><?php esc_html_e( $result_front[0]['survey_form_question'], 'wp-survey-form' ); ?></label>
 						<div class="option_group">
 							<?php
-							foreach ( $option_array as $val ) {
-								?>
-								<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>"><?php echo $val; ?></label>
-								<input type="hidden" class="survey-<?php echo "{$form_id}-{$val}"; ?>" value="">
-								<div class="<?php echo "surveyformid_{$form_id}_{$val}" ?>"></div>
+							foreach ( $option_array as $val ) { ?>
+								<label class=""><input type="radio" name="survey_option" value="<?php echo $val; ?>"><?php esc_html_e( $val ); ?></label>
+								<input type="hidden" class="survey-<?php esc_html_e ("{$form_id}-{$val}" ); ?>" value="">
+								<div class="<?php esc_html_e( "surveyformid_{$form_id}_{$val}" ); ?>"></div>
 								<?php
 								$count ++;
 							}
 							?>
 						</div>
 					</div>
-					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php echo $form_id; ?>">
-					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php echo $form_name; ?>">
+					<input type="hidden" name="hidden_id" class="hidden_form_id" value="<?php esc_html_e( $form_id ); ?>">
+					<input type="hidden" name="hidden_name" class="hidden_form_name" value="<?php esc_html_e( $form_name ); ?>">
 				</div>
 				<?php
 			}
@@ -167,9 +166,9 @@ class sf_survey_form_public {
 	function sf_submit_survey_form_ajax() {
 
 		global $wpdb;
-		$option_value      = isset( $_POST['option_value'] ) ? $_POST['option_value'] : "";
-		$hidden_form_id    = isset( $_POST['hidden_form_id'] ) ? $_POST['hidden_form_id'] : "";
-		$hidden_form_name  = isset( $_POST['hidden_form_name'] ) ? $_POST['hidden_form_name'] : "";
+		$option_value      = filter_input( INPUT_POST, 'option_value', FILTER_SANITIZE_STRING );
+		$hidden_form_id    = filter_input( INPUT_POST, 'hidden_form_id', FILTER_SANITIZE_STRING );
+		$hidden_form_name  = filter_input( INPUT_POST, 'hidden_form_name', FILTER_SANITIZE_STRING );
 		$sf_option_key     = "surveyformid_{$hidden_form_id}_{$option_value}";
 		$survey_form_array = array();
 
