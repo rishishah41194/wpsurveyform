@@ -99,7 +99,7 @@ class sf_survey_form_admin {
 			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form&id=$survey_form_id" );
 		} else {
 			$wpdb->query( $wpdb->prepare( "INSERT INTO $sf_table_name ( survey_form_name, survey_form_question, survey_form_option, survey_form_enable_disable ) VALUES ( %s, %s, %s, %s ) ", array(
-					$survey_name,
+					esc_html( $survey_name ),
 					$survey_question,
 					$question_option_string_sanitized,
 					$survey_form_enable_disable,
