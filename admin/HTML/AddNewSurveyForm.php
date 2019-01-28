@@ -9,7 +9,10 @@ $sf_table_name_survey_form_data = $wpdb->prefix."survey_form_data";
 $sf_result_form          = $wpdb->get_results( $wpdb->prepare("SELECT * FROM `$sf_table_name_survey_form_data` WHERE `id` = '%d'", array( $sf_form_id ) ), ARRAY_A  );
 
 // Get all options from the query,
-$sf_survey_option_string = $sf_result_form[0]['survey_form_option'];
+$sf_survey_option_string = isset( $sf_result_form[0]['survey_form_option'] ) ? $sf_result_form[0]['survey_form_option'] : "";
+
+// Check Survey form Active status.
+$sf_survey_form_enable_disable = isset( $sf_result_form[0]['survey_form_enable_disable'] ) ? $sf_result_form[0]['survey_form_enable_disable'] : "";
 
 // Convert options string to array.
 $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
@@ -26,12 +29,12 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 							<tr>
 								<th><?php esc_html_e( "Enable / Disable The Form:", 'wp-survey-form' ) ?></th>
 								<td>
-									<label><input type="radio" name="enable/disable" value="Enable" class="survey_enable_disable" <?php if ( $sf_result_form[0]['survey_form_enable_disable'] === "Enable" ) {
+									<label><input type="radio" name="enable/disable" value="Enable" class="survey_enable_disable" <?php if ( $sf_survey_form_enable_disable === "Enable" ) {
 											echo "checked";
 										} ?> <?php if ( empty( $sf_form_id ) ) {
 											echo "checked";
 										} ?>>Enable</label>
-									<label><input type="radio" name="enable/disable" value="Disable" class="survey_enable_disable" <?php if ( $sf_result_form[0]['survey_form_enable_disable'] === "Disable" ) {
+									<label><input type="radio" name="enable/disable" value="Disable" class="survey_enable_disable" <?php if ( $sf_survey_form_enable_disable === "Disable" ) {
 											echo "checked";
 										} ?>>Disable</label>
 								</td>
@@ -77,10 +80,11 @@ $sf_survey_option_array  = explode( ",", $sf_survey_option_string );
 											// Get count value of the particular option.
 											$sf_table_name_survey_form_data_count = $wpdb->prefix."survey_form_data_count";
 											$count_value_array          = $wpdb->get_results( $wpdb->prepare("SELECT `form_option_count` FROM `$sf_table_name_survey_form_data_count` WHERE `form_option_name` = '%s'" , array( $option_name_count ) ), ARRAY_A );
+											$sf_form_option_count       = isset( $count_value_array[0]['form_option_count'] ) ? $count_value_array[0]['form_option_count'] : "";
 											?>
 											<div class="col-md-3 col-sm-3 col-xs-6">
 												<a href="javascript:void(0)" class="btn btn-sm animated-button victoria-one" id="surveyformid_<?php echo $sf_form_id; ?>_<?php echo $sf_survey_option_array_result; ?>">Reset</a>
-												<input type="hidden" class="reset_count_value" value="<?php echo $count_value_array[0]['form_option_count']; ?>">
+												<input type="hidden" class="reset_count_value" value="<?php echo $sf_form_option_count; ?>">
 											</div>
 										</div>
 									</td>
