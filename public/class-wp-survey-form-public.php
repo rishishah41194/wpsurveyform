@@ -78,7 +78,7 @@ class sf_survey_form_public {
 
 			$sf_table_name_survey_form_data       = $wpdb->prefix . "survey_form_data";
 			$sf_table_name_survey_form_data_count       = $wpdb->prefix . "survey_form_data_count";
-			$result_front = $wpdb->get_results( "SELECT * FROM  $sf_table_name_survey_form_data WHERE `id` = '$form_id' AND `survey_form_name` = '$form_name'", ARRAY_A );
+			$result_front = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $sf_table_name_survey_form_data WHERE `id` = %d AND `survey_form_name` = %s", array( $form_id, $form_name ) ), ARRAY_A );
 
 			if( isset( $result_front ) && !empty( $result_front ) ) {
 				?>
@@ -87,18 +87,19 @@ class sf_survey_form_public {
 					<?php
 					$sf_options_string = $result_front[0]['survey_form_option'];
 					$sf_options_array = explode( ",", $sf_options_string );
-					$total_count_vote    = "";
+					$total_count_vote    = 0;
 					foreach ( $sf_options_array as $result_front_result ) {
 						$sf_option_key = "surveyformid_".$form_id."_".$result_front_result;
-						$result_from_coockie = $wpdb->get_results( "SELECT `form_option_count` FROM $sf_table_name_survey_form_data_count WHERE `form_option_name` = '$sf_option_key'", ARRAY_A );
-						$total_count_vote +=  $result_from_coockie[0]['form_option_count'];
+						$result_from_coockie = $wpdb->get_results( $wpdb->prepare("SELECT `form_option_count` FROM $sf_table_name_survey_form_data_count WHERE `form_option_name` = %s", array( $sf_option_key ) ), ARRAY_A );
+						$form_option_count = $result_from_coockie[0]['form_option_count'];
+						$total_count_vote +=  intval( $form_option_count );
 					}
 
 					$COOKIE_option_value = explode( "_", $final_result[0] );
 					$count = 0;
 					foreach ( $sf_options_array as $result_front_result ) {
 						$sf_option_key = "surveyformid_".$form_id."_".$result_front_result;
-						$result_from_coockie = $wpdb->get_results( "SELECT `form_option_count` FROM $sf_table_name_survey_form_data_count WHERE `form_option_name` = '$sf_option_key'", ARRAY_A );
+						$result_from_coockie = $wpdb->get_results( $wpdb->prepare("SELECT `form_option_count` FROM $sf_table_name_survey_form_data_count WHERE `form_option_name` = %s", array( $sf_option_key ) ), ARRAY_A );
 						if( isset( $result_from_coockie[0]['form_option_count'] ) && !empty( $result_from_coockie[0]['form_option_count'] ) ) {
 							$single_option_count = round( $result_from_coockie[0]['form_option_count'] * 100 / $total_count_vote );
 							?>
@@ -175,28 +176,27 @@ class sf_survey_form_public {
 		array_push( $survey_form_array, $sf_option_key, $hidden_form_id );
 
 		$table_name_survey_form_data_count = $wpdb->prefix . "survey_form_data_count";
-		$options_of_current_form = $wpdb->get_results( "SELECT form_option_count FROM $table_name_survey_form_data_count WHERE `form_option_name` = '$sf_option_key' ", ARRAY_A );
+		$options_of_current_form = $wpdb->get_results( $wpdb->prepare("SELECT form_option_count FROM $table_name_survey_form_data_count WHERE `form_option_name` = %s ", array( $sf_option_key ) ), ARRAY_A );
 
 		if ( isset( $options_of_current_form ) && ! empty( $options_of_current_form ) ) {
 
 			$increse_count = $options_of_current_form[0]['form_option_count'];
 			$increse_count ++;
 
-			$wpdb->update( $table_name_survey_form_data_count, array(
-				'survey_form_id'    => $hidden_form_id,
-				'form_option_id'    => $hidden_form_id,
-				'form_option_name'  => $sf_option_key,
-				'form_option_count' => $increse_count,
-			), array( 'form_option_name' => $sf_option_key ) );
-
+			$wpdb->query( $wpdb->prepare( "update $table_name_survey_form_data_count SET survey_form_id = %d, form_option_id = %d, form_option_name = %s, form_option_count = %d WHERE form_option_name = %s ", array(
+				esc_html( $hidden_form_id ),
+				esc_html( $hidden_form_id ),
+				esc_html( $sf_option_key ),
+				esc_html( $increse_count ),
+				esc_html( $sf_option_key ),
+			) ) );
 		} else {
-			$wpdb->insert( $table_name_survey_form_data_count, array(
-				'survey_form_id'    => $hidden_form_id,
-				'form_option_id'    => $hidden_form_id,
-				'form_option_name'  => $sf_option_key,
-				'form_option_count' => 1,
-			) );
-			$record_id = $wpdb->insert_id;
+			$wpdb->query( $wpdb->prepare( "INSERT INTO $table_name_survey_form_data_count ( survey_form_id, form_option_id, form_option_name, form_option_count ) VALUES ( %d, %d, %s, %d ) ", array(
+				esc_html( $hidden_form_id ),
+				esc_html( $hidden_form_id ),
+				esc_html( $sf_option_key ),
+				1,
+			) ) );
 		}
 
 		setcookie( 'survey_form_cookie', json_encode( $survey_form_array ), ( time() + (10 * 365 * 24 * 60 * 60 ) ), "/" );

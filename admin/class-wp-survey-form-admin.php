@@ -90,19 +90,19 @@ class sf_survey_form_admin {
 		$sf_table_name = $wpdb->prefix . "survey_form_data";
 		if ( ! empty( $survey_form_id ) ) {
 			$wpdb->query( $wpdb->prepare( "update $sf_table_name SET survey_form_name = %s, survey_form_question = %s, survey_form_option = %s, survey_form_enable_disable = %s WHERE id = %d ", array(
-					$survey_name,
-					$survey_question,
-					$question_option_string_sanitized,
-					$survey_form_enable_disable,
-					$survey_form_id,
+				esc_html( $survey_name ),
+				esc_html( $survey_question ),
+				esc_html( $question_option_string_sanitized ),
+				esc_html( $survey_form_enable_disable ),
+				esc_html( $survey_form_id ),
 				) ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=add_new_survey_form&id=$survey_form_id" );
 		} else {
 			$wpdb->query( $wpdb->prepare( "INSERT INTO $sf_table_name ( survey_form_name, survey_form_question, survey_form_option, survey_form_enable_disable ) VALUES ( %s, %s, %s, %s ) ", array(
-					esc_html( $survey_name ),
-					$survey_question,
-					$question_option_string_sanitized,
-					$survey_form_enable_disable,
+				esc_html( $survey_name ),
+				esc_html( $survey_question ),
+				esc_html( $question_option_string_sanitized ),
+				esc_html( $survey_form_enable_disable ),
 				) ) );
 			wp_safe_redirect( "/wp-admin/admin.php?page=display_survey_form" );
 		}

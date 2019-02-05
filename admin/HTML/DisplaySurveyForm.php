@@ -5,7 +5,7 @@ global $wpdb;
 
 // Get result of all forms from the Database.
 $sf_survey_form_data_table_name = $wpdb->prefix . "survey_form_data";
-$sf_query_forget_result         = $wpdb->get_results( $wpdb->prepare( "SELECT id, survey_form_name, survey_form_enable_disable FROM $sf_survey_form_data_table_name", '' ), ARRAY_A );
+$sf_query_forget_result         = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $sf_survey_form_data_table_name", "" ), ARRAY_A );
 
 // Check if there are any forms are available or not into the database.
 if ( ! empty( $sf_query_forget_result ) ) {
